@@ -1,0 +1,317 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: none;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+:root {
+    --bg-DarkmodSection: rgba(52,53,65, 1);
+    --bg-DarkmodMenu: rgba(32,33,35, 1);
+    --bg-LightmodSection: #fff;
+    --bg-LightmodMenu: linear-gradient(175deg, #2a2a2aae, #1a1a1ab3, #3a3a3ae8);
+}
+
+body, #root {
+    min-height: 100vh;
+}
+
+#app {
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+}
+
+#app > div:first-of-type {
+    grid-column: span 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    position: relative;
+    background: var(--bg-DarkmodMenu);
+}
+
+#app > div:first-of-type > div:first-child {
+    position: absolute;
+    top: 20px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100%;
+    color: #ffffffe3;
+    visibility: hidden;
+}
+
+#app > div:first-of-type > div:first-child:hover {
+    color: #ffffff7c;
+}
+
+#app > div:first-of-type > div:nth-child(2) {
+    position: absolute;
+    top: -20px;
+    left: -10px;
+    width: 120px;
+    height: 120px;
+    margin-left: 10px;
+}
+
+#app > div:first-of-type > div:nth-child(2) svg {
+    width: 100%;
+    height: 100%;
+ }
+
+#app > div:first-of-type > div:nth-child(2) svg path {
+    fill: white;
+}
+
+#app > div:first-of-type > ul {
+    height: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+#app > div:first-of-type > ul li {
+    width: 90%;
+    height: calc(45% / 4);
+    margin: 0 auto;
+    font-size: 1.1rem;
+    font-weight: 600;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 5px;
+    color: #ffffffe0;
+}
+
+#app > div:first-of-type > ul li a {
+    color: #ffffffe0;
+    text-decoration: none;
+}
+
+#app > div:first-of-type > ul li:last-of-type * {
+    margin: 0 5px;
+}
+
+#app > div:first-of-type > ul li:hover {
+    background-color: rgb(117, 117, 117);
+}
+
+#app > div:first-of-type > div:last-child {
+    height: 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#app > div:first-of-type > div:last-child a {
+    transition: .7s;
+    width: 90%;
+    height: calc(80% / 2);
+    font-size: 1.1rem;
+    text-decoration: none;
+    color: #ffffffe0;
+    border: 2px solid #ffffffe0;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#app > div:first-of-type > div:last-child a:hover {
+    color: #3a3a3ae8;
+    border: none;
+    background-color: #ffffffe0;
+}
+
+#app > div:last-of-type {
+    grid-column: span 8;
+    background-color: var(--bg-LightmodSection);
+    height: 100vh;
+}
+
+#app > div:last-of-type > div:first-of-type {
+    display: none;
+}
+
+.LightMode {
+    background-color: var(--bg-LightmodSection);
+    color: rgba(0, 0, 0, 0.779);
+}
+
+.DarkMode {
+    background-color: var(--bg-DarkmodSection) !important;
+    color: white;
+}
+
+#container {
+    height: 100%;
+    position: relative;
+}
+
+#container > div:first-of-type {
+    padding: 10px 0;
+    text-align: center;
+}
+
+.DefaultContent {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: .4;
+}
+
+#container > div:last-of-type {
+    height: 91%;
+    padding: 15px 10px;
+}
+
+#container > div:last-of-type > div:first-of-type {
+    height: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#container > div:last-of-type > div:first-of-type input {
+    width: 250px;
+    height: 30px;
+    padding: 0 10px;
+    margin-right: 5px;
+}
+
+#container > div:last-of-type > div:first-of-type button {
+    width: 75px;
+    height: 30px;
+    cursor: pointer;
+}
+
+#StagiaireData, #AccountData {
+    width: 100%;
+    height: 90%;
+}
+
+#StagiaireData > div:first-of-type, #AccountData > div:first-of-type {
+    width: 100%;
+    height: 90%;
+    display: grid;
+    grid-template-columns: repeat(6, calc(95% / 6));
+    column-gap: 9px;
+    row-gap: 9px;
+    overflow-x: hidden;
+}
+
+#StagiaireData > div:first-of-type::-webkit-scrollbar,
+#AccountData > div:first-of-type::-webkit-scrollbar{
+    background: transparent;
+    width: 10px;
+}
+
+
+#StagiaireData > div:first-of-type::-webkit-scrollbar-thumb,
+#AccountData > div:first-of-type::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background: rgb(178, 178, 178);
+}
+
+#StagiaireData > div:last-of-type, #AccountData > div:last-of-type {
+    width: 100%;
+    height: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: end;
+}
+
+#StagiaireData > div:last-of-type button, #AccountData > div:last-of-type button {
+    margin: 0 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: 5px;
+}
+
+#StagiaireData > div:last-of-type > .remove, #AccountData > div:last-of-type > .remove {
+    border: none;
+    color: white;
+    background-color: #ff0000;
+}
+
+#StagiaireData > div:last-of-type .save, #AccountData > div:last-of-type .save {
+    transition: .3s;
+    border: 2px solid #2c2c2c;
+    background: none;
+    color: #2c2c2c;
+}
+
+#StagiaireData > div:last-of-type > .save:hover, #AccountData > div:last-of-type > .save:hover {
+    background-color: #2c2c2c;
+    color: white;
+}
+
+#StagiaireData > div:first-of-type > .Cards, #AccountData > div:first-of-type > .Cards {
+    transition: .2s;
+    position: relative;
+    grid-column: span 2;
+    height: 275px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px 15px;
+    border: 1px solid black;
+}
+
+#AccountData > div:first-of-type > .Cards {
+    height: 200px;
+}
+
+.CardActive {
+    transform: scale(.9);
+}
+
+#StagiaireData > div:first-of-type > .Cards h2,
+#StagiaireData > div:first-of-type > .Cards > p,
+#AccountData > div:first-of-type > .Cards h2,
+#AccountData > div:first-of-type > .Cards > p {
+    text-align: center;
+}
+
+#StagiaireData > div:first-of-type > .Cards > div,
+#AccountData > div:first-of-type > .Cards > div {
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#StagiaireData > div:first-of-type > .Cards > div > p,
+#AccountData > div:first-of-type > .Cards > div > p {
+    margin: 5px 0;
+}
+
+#delete-item {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 1.3rem;
+}
+
+#delete-item:hover {
+    color: red;
+}
+
+#field {
+    font-weight: bold;
+}

@@ -1,0 +1,119 @@
+@media (min-width: 300px) and (max-width: 350px) {
+
+    #app > div:last-of-type {
+        grid-column: span 10;
+    }
+
+    #app > div:last-of-type > div:first-of-type {
+        display: block;
+        position: absolute;
+        z-index: 10;
+        top: 20px;
+        left: 10px;
+        font-size: 1.5rem;
+        cursor: pointer;
+    }
+
+    #app > div:first-of-type {
+        transition: .5s;
+        width: 50%;
+        height: 100%;
+        position: absolute;
+        z-index: 100;
+    }
+
+    #app > div:first-of-type > div:nth-child(2) {
+        top: -15px;
+        left: -10px;
+        width: 100px;
+        height: 100px;
+    }
+
+    #app > div:first-of-type > ul li {
+        font-size: .7rem;
+    }
+
+    #app > div:first-of-type > div:first-child {
+        width: 25px;
+        height: 25px;
+        font-size: 1rem;
+        visibility: visible;
+    }
+
+    #app > div:first-of-type > div:last-child a {
+        height: calc(55% / 2);
+        font-size: .8rem;
+    }
+
+    .Hide {
+        left: -55%;
+    }
+
+    .Show {
+        left: 0%;
+    }
+}
+
+@media (min-width: 350px) and (max-width: 750px) {
+    #app > div:last-of-type {
+        grid-column: span 10;
+    }
+
+    #app > div:last-of-type > div:first-of-type {
+        display: block;
+        position: absolute;
+        z-index: 10;
+        top: 20px;
+        left: 10px;
+        font-size: 1.5rem;
+        cursor: pointer;
+    }
+
+    #app > div:first-of-type {
+        transition: .5s;
+        width: 50%;
+        height: 100%;
+        position: absolute;
+        z-index: 100;
+    }
+
+    #app > div:first-of-type > div:first-child {
+        width: 30px;
+        height: 30px;
+        font-size: 1.1rem;
+        visibility: visible;
+    }
+
+    #app > div:first-of-type > ul li {
+        font-size: .8rem;
+    }
+
+    #app > div:first-of-type > div:last-child a {
+        height: calc(65% / 2);
+        font-size: 1rem;
+    }
+
+
+    .Hide {
+        left: -55%;
+    }
+
+    .Show {
+        left: 0%;
+    }
+}
+
+@media (min-width: 500px) and (max-width: 750px) {
+
+    #app > div:first-of-type > ul li {
+        font-size: 1rem;
+    }
+
+    .Hide {
+        left: -55%;
+    }
+
+    .Show {
+        left: 0%;
+    }
+}
