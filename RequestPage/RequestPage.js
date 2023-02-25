@@ -17,19 +17,11 @@ export default function RequestPage() {
     <div id={Request.RequestPage}>
       <div>
         <div>
-            <h2>Recevez les nouvelles offres d'emploi par email</h2>
+            <h2>Entez votre information pour demande de stage</h2>
             <form>
                 <div>
-                    <label for="LastName">Prenom</label>
-                    <input type="text" name="LastName" id='LastName' placeholder='Votre prenom' />
-                </div>
-                <div>
-                    <label for="FirstName">Nom</label>
-                    <input type="text" name="FirstName" id='FirstName' placeholder='Votre nom' />
-                </div>
-                <div>
-                    <label for="Email">Adresse email</label>
-                    <input type="email" name="Email" id='Email' placeholder='Votre adresse email'/>
+                    <label for="message">Ton Message</label>
+                    <textarea id='message' placeholder='Message' name='message'></textarea>
                 </div>
                 <div onClick={AddCv}>
                     <input ref={file} type="file" name="CV" style={{ display: 'none' }} onChange={value}/>
@@ -39,7 +31,7 @@ export default function RequestPage() {
                     </div>
                 </div>
                 <div>
-                    <button type="button">Je postule sur le site du recruteur</button>
+                    <button type="button">Envoyer la demande</button>
                 </div>
             </form>
         </div>

@@ -4,4 +4,4 @@ import AdminPage from "./AdminPage/AdminPage";
 import RequestPage from "./RequestPage/RequestPage";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
-root.render(<AdminPage />);
+root.render(<RequestPage />);
