@@ -10,19 +10,21 @@
 
         public function GetAllStagiaires()
         {
-            $data = $this -> connect -> prepare('SELECT * FROM stagiaire');
+            $data = $this -> connect -> prepare('SELECT * FROM Stagiaire_acc');
             $data -> execute();
 
             $response = [];
 
             foreach ($data as $value) {
                 array_push($response, [
-                    'idStiaire' => $value['idStiaire'],
+                    'idStiaire' => $value['Acc_id'],
                     'FirstName' => $value['Fname'],
                     'LastName' => $value['Lname'],
                     'Specialty' => $value['Domain'],
                     'Thel' => $value['_Number'],
-                    'CIN' => $value['CIN']
+                    'CIN' => $value['CIN'],
+                    'Email' => $value['Acc_email'],
+                    'Password' => $value['_Password']
                 ]);
             };
 
@@ -31,7 +33,7 @@
 
         public function DeleteStagiaire(int $stagiaireId)
         {
-            $rem = $this -> connect -> prepare("DELETE FROM stagiaire WHERE idStiaire = $stagiaireId");
+            $rem = $this -> connect -> prepare("DELETE FROM Stagiaire_acc WHERE Acc_id = $stagiaireId");
             $rem -> execute();
         }
 
@@ -39,19 +41,20 @@
         {
             foreach ($stagiaireArr as $item) {
                 $id = (int) $item;
-                $rem = $this -> connect -> prepare("DELETE FROM stagiaire WHERE idStiaire = $id");
+                $rem = $this -> connect -> prepare("DELETE FROM Stagiaire_acc WHERE Acc_id = $id");
                 $rem -> execute();
             };
         }
 
         public function DeleteAll()
         {
-            $rem = $this -> connect -> prepare("DELETE FROM stagiaire");
+            $rem = $this -> connect -> prepare("DELETE FROM Stagiaire_acc");
             $rem -> execute();
         }
     };
 
-    class StagiaireAccounts {
+
+    class Requests {
         private $connect;
 
         public function __construct()
@@ -59,51 +62,23 @@
             $this -> connect = new PDO("mysql:host=localhost:3306;dbname=airport;", 'root', '26022002');
         }
 
-        public function GetAllAccountes()
+        public function GetAllRequests()
         {
-            $Get = $this -> connect -> prepare('SELECT * FROM stagiaire_acc');
-            $Get -> execute();
-
+            $req = $this -> connect -> prepare("SELECT Acc_id, Message, RequDate FROM requests");
+            $req -> execute();
             $response = [];
 
-            foreach ($Get as $value) {
+            foreach ($req as $value) {
                 array_push($response, [
-                    'Acc_id' => $value['Acc_id'],
-                    'idStiaire' => $value['idStiaire'],
-                    'Acc_Email' => $value['Acc_Email'],
-                    'Acc_Password' => $value['Acc_Password'],
+                    "Acc_id" => $value["Acc_id"],
+                    "Message" => $value["Message"],
+                    "RequDate" => $value["RequDate"]
                 ]);
-            };
+            }
 
             return $response;
         }
+    }
 
-        public function DeleteAccount($id)
-        {
-            $Get = $this -> connect -> prepare("DELETE FROM stagiaire_acc WHERE Acc_id = $id");
-            $Get -> execute();
-        }
-
-        public function DeleteAccounts(array $arr_id)
-        {
-            foreach ($arr_id as $item) {
-                $id = (int) $item;
-                $Get = $this -> connect -> prepare("DELETE FROM stagiaire_acc WHERE Acc_id = $id");
-                $Get -> execute();
-            }
-        }
-
-        public function DeleteAll()
-        {
-            $rem = $this -> connect -> prepare("DELETE FROM stagiaire_acc");
-            $rem -> execute();
-        }
-    };
-
-    // $sta = new Stagiaire();
-
-    // $sta -> DeleteStagiaire();
-
-    // $acc = new StagiaireAccounts();
-
-    // $acc -> GetAllAccountes();
+    // $Req = new Requests();
+    // print_r($Req -> GetAllRequests());

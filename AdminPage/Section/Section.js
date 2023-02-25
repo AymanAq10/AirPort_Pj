@@ -4,13 +4,12 @@ import { FiMenu } from 'react-icons/fi';
 import { useDispatch } from 'react-redux';
 
 import Stagiaire from './Stagiaire';
-import Stag_Account from './Stag_Account';
+import Requests from './Requests';
 
 import { Route, Routes} from 'react-router-dom';
 
 export default function Section() {
 
-  const [Data, setData] = useState(null);
   const dispatch = useDispatch();
 
   function ShowMenu() {
@@ -30,7 +29,7 @@ export default function Section() {
           <Routes>
             <Route exact path='/' element={<img src="./Images/nodata.png" className='DefaultContent' />}/>
             <Route path='/StagiaireData' element={<Stagiaire />}/>
-            <Route path='/AccountData' element={<Stag_Account />}/>
+            <Route path='/Requests' element={<Requests />}/>
           </Routes>
         </div>
       </div>

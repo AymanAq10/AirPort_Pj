@@ -283,7 +283,6 @@ export default function Menu() {
       </div>
       <ul>
         <li><a href="/StagiaireData">Information de Stagiaire</a></li>
-        <li><a href="/AccountData">Les Compte de Stagiaire</a></li>
         <li><a href="/Requests">Les Demande de Stage</a></li>
         <li><a href="/AcceptedRequests">Les demandes Acceptée</a></li>
         <li onClick={PageState}>

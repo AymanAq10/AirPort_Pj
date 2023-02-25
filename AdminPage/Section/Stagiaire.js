@@ -33,7 +33,7 @@ export default function Stagiaire() {
         }, 3000);
       } else {
         if (Number.isInteger(idx / 3) && idx / 3 !== 0) {
-          ScrollDown += 284;
+          ScrollDown += 309;
         }
       }
     });
@@ -103,7 +103,7 @@ export default function Stagiaire() {
   }
 };
 
-function StagiaireCards({eleKey, obj: {idStiaire, FirstName, LastName, Specialty, Thel, CIN}, Data}) {
+function StagiaireCards({eleKey, obj: {idStiaire, FirstName, LastName, Specialty, Thel, CIN, Email, Password}, Data}) {
 
   const card = useRef();
 
@@ -138,6 +138,8 @@ function StagiaireCards({eleKey, obj: {idStiaire, FirstName, LastName, Specialty
         <p><span id='field'>Specialty:</span> {Specialty}</p>
         <p><span id='field'>Phone:</span> {Thel}</p>
         <p><span id='field'>CIN:</span> {CIN}</p>
+        <p><span id='field'>Email:</span> {Email}</p>
+        <p><span id='field'>Password:</span> {Password}</p>
       </div>
       <p>{eleKey + 1}</p>
     </div>

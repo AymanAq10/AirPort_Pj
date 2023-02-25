@@ -1,7 +1,18 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import Request from './RequestPage.module.css';
 
 export default function RequestPage() {
+
+    const file = useRef();
+
+    function AddCv() {
+        file.current.click();
+    }
+
+    const value = () => {
+        console.log(file.current.value);
+    }
+
   return (
     <div id={Request.RequestPage}>
       <div>
@@ -17,11 +28,11 @@ export default function RequestPage() {
                     <input type="text" name="FirstName" id='FirstName' placeholder='Votre nom' />
                 </div>
                 <div>
-                    <label for="Email"></label>
-                    <input type="email" name="Email" id='Email' placeholder='Votre adresse email' />
+                    <label for="Email">Adresse email</label>
+                    <input type="email" name="Email" id='Email' placeholder='Votre adresse email'/>
                 </div>
-                <div>
-                    <input type="file" name="CV" />
+                <div onClick={AddCv}>
+                    <input ref={file} type="file" name="CV" style={{ display: 'none' }} onChange={value}/>
                     <div>
                         <span class="material-symbols-outlined">download</span>
                         <p>Ajouter votre CV</p>
