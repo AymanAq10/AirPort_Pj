@@ -18,7 +18,55 @@ export default function Requests() {
   }, []);
 
   function Search() {
-    
+    const id = parseInt(InputVal.current.value);
+    let ScrollDown = 0;
+
+    RequestData.forEach((ele, idx) => {
+      if (id === ele.Acc_id) {
+        parent.current.firstElementChild.scrollTo({left : 0, top : ScrollDown, behavior : "smooth"});
+        parent.current.firstElementChild.children[idx].style = 'border: 3px solid green;';
+        setTimeout(() => {
+          parent.current.firstElementChild.children[idx].setAttribute('style', '');
+        }, 3000);
+      } else {
+        if (Number.isInteger(idx / 2) && idx / 2 !== 0) {
+          ScrollDown += 414;
+        }
+      }
+    });
+  }
+
+  function DeleteAll() {
+    fetch("http://localhost/airport-Project/src/BackEnd/Requests.php", {
+      method: 'POST',
+      body: new URLSearchParams([['type', 'DeleteAllRequests']])
+    });
+
+    setRequestData([]);
+  }
+
+  function AccepteSomeRequests() {
+    const ItemsId = Array.from(document.getElementsByClassName("CardActive")).map(ele => {
+      return parseInt(ele.children[1].firstElementChild.textContent);
+    });
+
+    fetch("http://localhost/airport-Project/src/BackEnd/Requests.php", {
+      method: 'POST',
+      body: new URLSearchParams([['type', 'AccepteReq'], ['ItemsId', ItemsId]])
+    });
+
+    Array.from(document.getElementsByClassName("CardActive")).forEach(ele => {
+      ele.classList.remove('CardActive');
+    });
+  }
+
+  function AccepteAllRequests() {
+    const ItemsId = RequestData.map(ele => ele.Acc_id);
+
+    fetch("http://localhost/airport-Project/src/BackEnd/Requests.php", {
+      method: 'POST',
+      body: new URLSearchParams([['type', 'AccepteReq'], ['ItemsId', ItemsId]])
+    });
   }
 
   if (RequestData.length > 0) {
@@ -33,10 +81,10 @@ export default function Requests() {
             {RequestData.map((ele, idx) => <RequestCard eleKey={idx} obj={ele} Data={setRequestData}/>)}
           </div>
           <div>
-            <button type="button" className='remove'>Remove All</button>
+            <button type="button" className='remove' onClick={DeleteAll}>Remove All</button>
             <button type="button" className='remove'>Remove the request not accpted</button>
-            <button type="button" className='save'>Accept All</button>
-            <button type="button" className='save'>Accept</button>
+            <button type="button" className='save' onClick={AccepteAllRequests}>Accept All</button>
+            <button type="button" className='save' onClick={AccepteSomeRequests}>Accept</button>
           </div>
         </div>
       </>
@@ -59,9 +107,9 @@ function RequestCard({eleKey, obj: {Acc_id, Message, RequDate}, Data}) {
   function DeleteItem() {
     card.current.classList.remove('CardActive');
 
-    fetch("http://localhost/airport-Project/src/BackEnd/Statgiaire.php", {
+    fetch("http://localhost/airport-Project/src/BackEnd/Requests.php", {
       method: 'POST',
-      body: new URLSearchParams([['type', 'DeleteItem'], ['ItemId', Acc_id]])
+      body: new URLSearchParams([['type', 'DeleteRequest'], ['ItemId', Acc_id]])
     });
 
     Data(prev => prev.filter(ele => {

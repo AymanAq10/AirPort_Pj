@@ -78,6 +78,36 @@
 
             return $response;
         }
+
+        public function DeleteOneRequest(int $req_id)
+        {
+            $rem = $this -> connect -> prepare("DELETE FROM requests WHERE Acc_id = $req_id");
+            $rem -> execute();
+        }
+
+        public function DeleteAllRequests()
+        {
+            $rem = $this -> connect -> prepare("DELETE FROM requests");
+            $rem -> execute();
+        }
+    }
+
+    class requestesaccepter
+    {
+        private $connect;
+        private int $Acc_id;
+        private $RequDateAcc;
+
+
+        public function __construct(int $Acc_id)
+        {
+            $this -> connect = new PDO("mysql:host=localhost:3306;dbname=airport;", 'root', '26022002');
+            $this -> RequDateAcc = date('Y-m-d');
+            $this -> Acc_id = $Acc_id;
+
+            $insert = $this -> connect -> prepare("INSERT INTO requestesaccepter VALUE(?, ?)");
+            $insert -> execute(array($this -> Acc_id, $this -> RequDateAcc));
+        }
     }
 
     // $Req = new Requests();

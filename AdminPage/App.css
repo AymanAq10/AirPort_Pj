@@ -288,6 +288,37 @@ body, #root {
     text-align: center;
 }
 
+#RequestData > div:first-of-type > .ReqCards > div:first-of-type {
+    height: 50%;
+    overflow-x: hidden;
+    font-size: 1.1rem;
+    line-height: 23px;
+}
+
+#RequestData > div:first-of-type > .ReqCards > div:last-of-type {
+    text-align: end;
+}
+
+#RequestData > div:first-of-type > .ReqCards > div:last-of-type button {
+    margin: 0 10px;
+    padding: 7px 15px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    border-radius: 5px;
+    border: none;
+}
+
+#RequestData > div:first-of-type > .ReqCards > div:last-of-type button:first-of-type {
+    background-color: rgb(1, 226, 42);
+    color: white;
+}
+
+#RequestData > div:first-of-type > .ReqCards > div:last-of-type button:last-of-type {
+    background-color: rgba(255, 255, 0, 0.914);
+}
+
 #RequestData > div:first-of-type > .Cards {
     height: 200px;
 }

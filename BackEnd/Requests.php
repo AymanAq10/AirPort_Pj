@@ -11,3 +11,21 @@
         header("Content-Type: JSON");
         echo json_encode($req -> GetAllRequests(), JSON_PRETTY_PRINT);
     }
+
+    elseif ($type == 'DeleteRequest') {
+        $req -> DeleteOneRequest($_POST['ItemId']);
+    }
+
+    elseif ($type == 'DeleteAllRequests') {
+        $req -> DeleteAllRequests();
+    }
+
+    elseif ($type == 'AccepteReq') {
+        $ItemsId = explode(',', $_POST['ItemsId']);
+
+        foreach ($ItemsId as $value) {
+            $id = (int) $value;
+
+            new requestesaccepter($id);
+        }
+    }
