@@ -363,3 +363,32 @@ body, #root {
 #field {
     font-weight: bold;
 }
+
+
+.PdfFile_View {
+    width: 80%;
+    height: 100%;
+    padding: 15px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    display: none;
+}
+
+#CancelPdfFile {
+    font-size: 1.5rem;
+    cursor: pointer;
+    position: relative;
+    left: 95%;
+}
+
+#CancelPdfFile:hover {
+    color: red;
+}
+
+.PdfFile_View > div {
+    width: 100%;
+    height: 95%;
+}

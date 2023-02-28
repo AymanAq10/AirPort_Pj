@@ -90,6 +90,38 @@
             $rem = $this -> connect -> prepare("DELETE FROM requests");
             $rem -> execute();
         }
+
+        public function ViewPdfFile(int $id)
+        {
+            $stmt = $this -> connect -> prepare("SELECT StagiaireCV FROM Requests WHERE Acc_id = $id");
+            $stmt -> execute();
+
+            $pdfData = $stmt -> fetchColumn();
+            header("Content-type: application/pdf");
+            header("Content-Length: " . strlen($pdfData));
+            echo $pdfData;
+        }
+
+        public function DownoaldPdfFile(int $id)
+        {
+            $stmt = $this -> connect -> prepare("SELECT StagiaireCV FROM Requests WHERE Acc_id = $id");
+            $stmt->execute();
+            $file = $stmt -> fetch(PDO::FETCH_ASSOC);
+
+            header("Content-type: application/pdf");
+            header("Content-Disposition: attachment; filename=" . (string) $id);
+            header("Content-length: " . strlen($file['StagiaireCV']));
+
+            echo $file['StagiaireCV'];
+        }
+
+        public function RemoveRequestsNotAccepte()
+        {
+            $stmt = $this -> connect -> prepare("CALL RemoveRequestsNotAccepte ();");
+            $stmt->execute();
+
+            return requestesaccepter :: GetAcc_id();
+        }
     }
 
     class requestesaccepter
@@ -108,7 +140,18 @@
             $insert = $this -> connect -> prepare("INSERT INTO requestesaccepter VALUE(?, ?)");
             $insert -> execute(array($this -> Acc_id, $this -> RequDateAcc));
         }
-    }
 
-    // $Req = new Requests();
-    // print_r($Req -> GetAllRequests());
+        public static function GetAcc_id()
+        {
+            $conn = new PDO("mysql:host=localhost:3306;dbname=airport;", 'root', '26022002');
+            $Get = $conn -> prepare("SELECT Acc_id FROM RequestesAccepter");
+            $Get -> execute();
+            $response = [];
+
+            foreach ($Get as $id) {
+                array_push($response, $id['Acc_id']);
+            }
+
+            return $response;
+        }
+    }

@@ -69,6 +69,22 @@ export default function Requests() {
     });
   }
 
+  function DeleteRequestsNotAccepte() {
+    fetch("http://localhost/airport-Project/src/BackEnd/Requests.php", {
+      method: 'POST', body: new URLSearchParams([['type', 'DeleteRequestsNotAccepte']])
+    })
+      .then(res => res.json())
+      .then(data => {
+        setRequestData(prev => {
+          return prev.filter(ele => {
+            if (data.find((id) => ele.Acc_id === id)) {
+              return ele;
+            }
+          });
+        });
+      });
+  };
+
   if (RequestData.length > 0) {
     return (
       <>
@@ -82,11 +98,12 @@ export default function Requests() {
           </div>
           <div>
             <button type="button" className='remove' onClick={DeleteAll}>Remove All</button>
-            <button type="button" className='remove'>Remove the request not accpted</button>
+            <button type="button" className='remove' onClick={DeleteRequestsNotAccepte}>Remove the request not accpted</button>
             <button type="button" className='save' onClick={AccepteAllRequests}>Accept All</button>
             <button type="button" className='save' onClick={AccepteSomeRequests}>Accept</button>
           </div>
         </div>
+        <ShowPdfFile />
       </>
     );
   } else {
@@ -121,6 +138,42 @@ function RequestCard({eleKey, obj: {Acc_id, Message, RequDate}, Data}) {
     card.current.classList.toggle('CardActive');
   };
 
+  function ViewPDFFile() {
+    fetch('http://localhost/airport-Project/src/BackEnd/Requests.php', {
+      method: "POST", body: new URLSearchParams([['type', 'viewPdfFile'], ['id', Acc_id]])
+    })
+      .then(response => response.blob())
+      .then(blob => {
+        const url = URL.createObjectURL(blob);
+        const embedPdfFile = document.getElementById("embedPdfFile");
+        const PdfFile_View = document.querySelector(".PdfFile_View");
+
+        PdfFile_View.style.display = 'block';
+        embedPdfFile.src = url;
+      })
+      .catch(error => console.log(error));
+
+      card.current.classList.toggle("CardActive");
+  }
+
+  function DownoaldPDFFile() {
+    fetch('http://localhost/airport-Project/src/BackEnd/Requests.php', {
+      method: "POST", body: new URLSearchParams([['type', 'DawnoaldPdfFile'], ['id', Acc_id]])
+    })
+      .then(res => res.blob())
+      .then(blob => {
+        const url = window.URL.createObjectURL(new Blob([blob]));
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'file.pdf';
+        a.click();
+        window.URL.revokeObjectURL(url);
+        a.remove();
+      });
+
+      card.current.classList.toggle("CardActive");
+  }
+
   return (
     <div className='ReqCards' ref={card} key={eleKey} onClick={CardClick}>
       <span id='delete-item' onClick={DeleteItem}><TiDelete /></span>
@@ -130,16 +183,34 @@ function RequestCard({eleKey, obj: {Acc_id, Message, RequDate}, Data}) {
         {Message}
       </div>
       <div>
-        <button type="button">
-          <span class="material-symbols-outlined">visibility</span>
+        <button type="button" onClick={ViewPDFFile}>
+          <span className="material-symbols-outlined">visibility</span>
           <p>View CV</p>
         </button>
-        <button type="button">
-          <span class="material-symbols-outlined">download</span>
+        <button type="button" onClick={DownoaldPDFFile}>
+          <span className="material-symbols-outlined">download</span>
           <p>Downoald CV</p>
         </button>
       </div>
       <p>{eleKey + 1}</p>
+    </div>
+  );
+}
+
+function ShowPdfFile() {
+
+  const view = useRef();
+
+  function hide() {
+    view.current.style = '';
+  }
+
+  return (
+    <div ref={view} className='PdfFile_View'>
+      <span id='CancelPdfFile' onClick={hide}><TiDelete /></span>
+      <div>
+        <embed id='embedPdfFile' style={{ width: "100%", height: "100%" }} type="application/pdf" />
+      </div>
     </div>
   );
 }
