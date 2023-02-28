@@ -131,14 +131,16 @@
         private $RequDateAcc;
 
 
-        public function __construct(int $Acc_id)
+        public function __construct(int $Acc_id = null)
         {
             $this -> connect = new PDO("mysql:host=localhost:3306;dbname=airport;", 'root', '26022002');
-            $this -> RequDateAcc = date('Y-m-d');
-            $this -> Acc_id = $Acc_id;
+            if ($Acc_id) {
+                $this -> RequDateAcc = date('Y-m-d');
+                $this -> Acc_id = $Acc_id;
 
-            $insert = $this -> connect -> prepare("INSERT INTO requestesaccepter VALUE(?, ?)");
-            $insert -> execute(array($this -> Acc_id, $this -> RequDateAcc));
+                $insert = $this -> connect -> prepare("INSERT INTO requestesaccepter VALUE(?, ?)");
+                $insert -> execute(array($this -> Acc_id, $this -> RequDateAcc));
+            }
         }
 
         public static function GetAcc_id()
@@ -150,6 +152,32 @@
 
             foreach ($Get as $id) {
                 array_push($response, $id['Acc_id']);
+            }
+
+            return $response;
+        }
+
+        public function GetData()
+        {
+            $data = $this -> connect -> prepare("SELECT Stagiaire_acc.*, Requests.Message, Requests.RequDate, RequestesAccepter.RequDateAcc FROM Stagiaire_acc INNER JOIN Requests ON Stagiaire_acc.Acc_id = Requests.Acc_id INNER JOIN RequestesAccepter ON Stagiaire_acc.Acc_id = RequestesAccepter.Acc_id");
+            $data -> execute();
+
+            $response = [];
+
+            foreach ($data as $data) {
+                array_push($response, [
+                    'Acc_id' => $data['Acc_id'],
+                    'Fname' => $data['Fname'],
+                    'Lname' => $data['Lname'],
+                    'Domain' => $data['Domain'],
+                    '_Number' => $data['_Number'],
+                    'Acc_email' => $data['Acc_email'],
+                    'CIN' => $data['CIN'],
+                    '_Password' => $data['_Password'],
+                    'Message' => $data['Message'],
+                    'RequDate' => $data['RequDate'],
+                    'RequDateAcc' => $data['RequDateAcc'],
+                ]);
             }
 
             return $response;

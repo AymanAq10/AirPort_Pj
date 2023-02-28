@@ -61,6 +61,8 @@ export default function Stagiaire() {
     });
   };
 
+  // <input type='text' name='email' />
+
   function DeleteAll() {
     fetch("http://localhost/airport-Project/src/BackEnd/Statgiaire.php", {
       method: 'POST',

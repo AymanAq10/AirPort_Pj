@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 
 import Stagiaire from './Stagiaire';
 import Requests from './Requests';
+import RequestAccepte from './RequestAccepte';
 
 import { Route, Routes} from 'react-router-dom';
 
@@ -30,6 +31,7 @@ export default function Section() {
             <Route exact path='/' element={<img src="./Images/nodata.png" className='DefaultContent' />}/>
             <Route path='/StagiaireData' element={<Stagiaire />}/>
             <Route path='/Requests' element={<Requests />}/>
+            <Route path='/AcceptedRequests' element={<RequestAccepte />}/>
           </Routes>
         </div>
       </div>
