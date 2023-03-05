@@ -7,7 +7,7 @@ import Stagiaire from './Stagiaire';
 import Requests from './Requests';
 import RequestAccepte from './RequestAccepte';
 
-import { Route, Routes} from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
 export default function Section() {
 

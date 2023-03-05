@@ -17,14 +17,14 @@
 
             foreach ($data as $value) {
                 array_push($response, [
-                    'idStiaire' => $value['Acc_id'],
-                    'FirstName' => $value['Fname'],
-                    'LastName' => $value['Lname'],
-                    'Specialty' => $value['Domain'],
-                    'Thel' => $value['_Number'],
+                    'Acc_id' => $value['Acc_id'],
+                    'Fname' => $value['Fname'],
+                    'Lname' => $value['Lname'],
+                    'Domain' => $value['Domain'],
+                    '_Number' => $value['_Number'],
                     'CIN' => $value['CIN'],
-                    'Email' => $value['Acc_email'],
-                    'Password' => $value['_Password']
+                    'Acc_email' => $value['Acc_email'],
+                    '_Password' => $value['_Password']
                 ]);
             };
 
@@ -176,10 +176,50 @@
                     '_Password' => $data['_Password'],
                     'Message' => $data['Message'],
                     'RequDate' => $data['RequDate'],
-                    'RequDateAcc' => $data['RequDateAcc'],
+                    'RequDateAcc' => $data['RequDateAcc']
                 ]);
             }
 
             return $response;
+        }
+
+        public function RemoveAll()
+        {
+            $data = $this -> connect -> prepare("DELETE FROM RequestesAccepter");
+            $data -> execute();
+        }
+
+        public function RemoveSome(array $itemsId)
+        {
+            foreach ($itemsId as $id) {
+                $rem = $this -> connect -> prepare("DELETE FROM RequestesAccepter WHERE Acc_id = $id");
+                $rem -> execute();
+            };
+        }
+
+        public function DownoaldAllPdfFiles()
+        {
+            $zip = new ZipArchive();
+            $zipFilename = 'pdfs.zip';
+            if ($zip->open($zipFilename, ZipArchive::CREATE | ZipArchive::OVERWRITE) === true) {
+                $files = $this->connect->prepare("SELECT Requests.StagiaireCV FROM RequestesAccepter INNER JOIN Requests ON RequestesAccepter.Acc_id = Requests.Acc_id;");
+                $files->execute();
+                $_files = $files->fetchAll(PDO::FETCH_ASSOC);
+                foreach ($_files as $file) {
+                    $pdfData = $file['StagiaireCV'];
+                    $zip->addFromString('CV', $pdfData);
+                }
+                $zip->close();
+            }
+
+            header('Content-Type: application/zip');
+            header('Content-Disposition: attachment; filename="' . $zipFilename . '"');
+            header('Content-Length: ' . filesize($zipFilename));
+            readfile($zipFilename);
+
+            foreach ($_files as $file) {
+                unlink($file['StagiaireCV']);
+            }
+            rmdir('temp');
         }
     }

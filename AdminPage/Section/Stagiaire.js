@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { TiDelete } from 'react-icons/ti';
 import ListButton from './ListButton';
+import axios from 'axios';
 
 export default function Stagiaire() {
 
@@ -11,13 +12,17 @@ export default function Stagiaire() {
   const parent = useRef();
 
   useEffect(() => {
-    fetch("http://localhost/airport-Project/src/BackEnd/Statgiaire.php", {
-      method: 'POST',
-      body: new URLSearchParams([['type', 'GetData']])
-    })
-      .then(resp => resp.json())
-      .then(data => setDataStag(data))
-      .catch(err => console.log(err));
+    // fetch("http://localhost/airport-Project/src/BackEnd/Statgiaire.php", {
+    //   method: 'POST',
+    //   body: new URLSearchParams([['type', 'GetData']])
+    // })
+    //   .then(resp => resp.json())
+    //   .then(data => setDataStag(data))
+    //   .catch(err => console.log(err));
+
+    axios.get('http://127.0.0.1:8000/api/Stagires')
+      .then(resp => setDataStag(resp.data));
+
   }, []);
 
   function Search() {
@@ -25,7 +30,7 @@ export default function Stagiaire() {
     let ScrollDown = 0;
 
     DataStag.forEach((ele, idx) => {
-      if (id === ele.idStiaire) {
+      if (id === ele.Acc_id) {
         parent.current.firstElementChild.scrollTo({left : 0, top : ScrollDown, behavior : "smooth"});
         parent.current.firstElementChild.children[idx].style = 'border: 3px solid green;';
         setTimeout(() => {
@@ -45,13 +50,15 @@ export default function Stagiaire() {
       return parseInt(ele.children[1].firstElementChild.textContent);
     });
 
-    fetch("http://localhost/airport-Project/src/BackEnd/Statgiaire.php", {
-      method: 'POST',
-      body: new URLSearchParams([['type', 'DeleteItems'], ['ItemsId', ItemsId]])
-    });
+    // fetch("http://localhost/airport-Project/src/BackEnd/Statgiaire.php", {
+    //   method: 'POST',
+    //   body: new URLSearchParams([['type', 'DeleteItems'], ['ItemsId', ItemsId]])
+    // });
+
+    axios.delete(`http://127.0.0.1:8000/api/Multi-Stagiaire_acc?ItemsId=` + JSON.stringify(ItemsId));
 
     setDataStag(prev => prev.filter(ele => {
-      if (!(ItemsId.some(id => ele.idStiaire === id))) {
+      if (!(ItemsId.some(id => ele.Acc_id === id))) {
         return ele;
       }
     }));
@@ -61,13 +68,13 @@ export default function Stagiaire() {
     });
   };
 
-  // <input type='text' name='email' />
-
   function DeleteAll() {
-    fetch("http://localhost/airport-Project/src/BackEnd/Statgiaire.php", {
-      method: 'POST',
-      body: new URLSearchParams([['type', 'DeleteAll']])
-    });
+    // fetch("http://localhost/airport-Project/src/BackEnd/Statgiaire.php", {
+    //   method: 'POST',
+    //   body: new URLSearchParams([['type', 'DeleteAll']])
+    // });
+
+    axios.delete('http://127.0.0.1:8000/api/stagires/clear');
 
     setDataStag([]);
   }
@@ -78,7 +85,7 @@ export default function Stagiaire() {
     });
 
     setSomeDataStag(DataStag.filter(ele => {
-      if (ItemsId.some(id => id === ele.idStiaire)) {
+      if (ItemsId.some(id => id === ele.Acc_id)) {
         return ele;
       }
     }));
@@ -105,7 +112,7 @@ export default function Stagiaire() {
   }
 };
 
-function StagiaireCards({eleKey, obj: {idStiaire, FirstName, LastName, Specialty, Thel, CIN, Email, Password}, Data}) {
+function StagiaireCards({eleKey, obj: {Acc_id, Fname, Lname, Domain, _Number, CIN, Acc_email, _Password}, Data}) {
 
   const card = useRef();
 
@@ -116,13 +123,15 @@ function StagiaireCards({eleKey, obj: {idStiaire, FirstName, LastName, Specialty
   function DeleteItem() {
     card.current.classList.remove('CardActive');
 
-    fetch("http://localhost/airport-Project/src/BackEnd/Statgiaire.php", {
-      method: 'POST',
-      body: new URLSearchParams([['type', 'DeleteItem'], ['ItemId', idStiaire]])
-    });
+    // fetch("http://localhost/airport-Project/src/BackEnd/Statgiaire.php", {
+    //   method: 'POST',
+    //   body: new URLSearchParams([['type', 'DeleteItem'], ['ItemId', Acc_id]])
+    // });
+
+    axios.delete(`http://localhost:8000/api/Stagires/${Acc_id}`);
 
     Data(prev => prev.filter(ele => {
-      if (ele.idStiaire !== idStiaire) {
+      if (ele.Acc_id !== Acc_id) {
         return ele;
       };
     }));
@@ -133,15 +142,15 @@ function StagiaireCards({eleKey, obj: {idStiaire, FirstName, LastName, Specialty
   return (
     <div className='Cards' ref={card} key={eleKey} onClick={CardClick}>
       <span id='delete-item' onClick={DeleteItem}><TiDelete /></span>
-      <h2>Stagiaire id: <span>{idStiaire}</span></h2>
+      <h2>Stagiaire id: <span>{Acc_id}</span></h2>
       <div>
-        <p><span id='field'>First Name:</span> {FirstName}</p>
-        <p><span id='field'>Last Name:</span> {LastName}</p>
-        <p><span id='field'>Specialty:</span> {Specialty}</p>
-        <p><span id='field'>Phone:</span> {Thel}</p>
+        <p><span id='field'>First Name:</span> {Fname}</p>
+        <p><span id='field'>Last Name:</span> {Lname}</p>
+        <p><span id='field'>Domain:</span> {Domain}</p>
+        <p><span id='field'>Phone:</span> {_Number}</p>
         <p><span id='field'>CIN:</span> {CIN}</p>
-        <p><span id='field'>Email:</span> {Email}</p>
-        <p><span id='field'>Password:</span> {Password}</p>
+        <p><span id='field'>Email:</span> {Acc_email}</p>
+        <p><span id='field'>Password:</span> {_Password}</p>
       </div>
       <p>{eleKey + 1}</p>
     </div>

@@ -1,0 +1,19 @@
+GET http://127.0.0.1:8000/api/stagires HTTP/1.1,
+
+
+
+put http://127.0.0.1:8000/api/stagires/1 HTTP/1.1
+
+content-type: application/json
+
+{
+    "Fname": "Dio",
+    "Lname": "Brando",
+    "Domain": "vampire",
+    "_Number": "90823745089",
+    "Acc_email": "zawarudo@time.stop",
+    "CIN": "ch214068",
+    "_Password": "pl)}{BvvxEVhrZm6$$"
+}
+
+DELETE  http://127.0.0.1:8000/api/stagires HTTP/1.1

@@ -12,3 +12,16 @@
     if ($type == 'GetRequestAccepte') {
         echo json_encode($reqAc -> GetData(), JSON_PRETTY_PRINT);
     }
+
+    elseif ($type == 'RemoveAll') {
+        $reqAc -> RemoveAll();
+    }
+
+    elseif ($type == 'RemoveSome') {
+        $data = json_decode($_POST['data']);
+        $reqAc -> RemoveSome($data);
+    }
+
+    elseif ($type == 'DownoaldAllCV') {
+        $reqAc -> DownoaldAllPdfFiles();
+    }

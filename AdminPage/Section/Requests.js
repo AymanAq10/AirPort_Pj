@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import { TiDelete } from 'react-icons/ti';
 
@@ -9,12 +10,16 @@ export default function Requests() {
   const parent = useRef();
 
   useEffect(() => {
-    fetch("http://localhost/airport-Project/src/BackEnd/Requests.php", {
-      method: 'POST', body: new URLSearchParams([["type", "GetAllRequests"]])
-    })
-      .then(resp => resp.json())
-      .then(data => {setRequestData(data)})
-      .catch(err => console.log(err))
+    // fetch("http://localhost/airport-Project/src/BackEnd/Requests.php", {
+    //   method: 'POST', body: new URLSearchParams([["type", "GetAllRequests"]])
+    // })
+    //   .then(resp => resp.json())
+    //   .then(data => {setRequestData(data)})
+    //   .catch(err => console.log(err))
+
+    axios.get('http://localhost:8000/api/Requestes')
+      .then(resp => setRequestData(resp.data));
+
   }, []);
 
   function Search() {
@@ -37,10 +42,8 @@ export default function Requests() {
   }
 
   function DeleteAll() {
-    fetch("http://localhost/airport-Project/src/BackEnd/Requests.php", {
-      method: 'POST',
-      body: new URLSearchParams([['type', 'DeleteAllRequests']])
-    });
+
+    axios.delete('http://localhost:8000/api/requestes/clear');
 
     setRequestData([]);
   }
@@ -50,9 +53,13 @@ export default function Requests() {
       return parseInt(ele.children[1].firstElementChild.textContent);
     });
 
-    fetch("http://localhost/airport-Project/src/BackEnd/Requests.php", {
-      method: 'POST',
-      body: new URLSearchParams([['type', 'AccepteReq'], ['ItemsId', ItemsId]])
+    // fetch("http://localhost/airport-Project/src/BackEnd/Requests.php", {
+    //   method: 'POST',
+    //   body: new URLSearchParams([['type', 'AccepteReq'], ['ItemsId', ItemsId]])
+    // });
+
+    axios.delete('http://localhost:8000/api/Requestes_accepter', {
+      data: {ItemsId: ItemsId}
     });
 
     Array.from(document.getElementsByClassName("CardActive")).forEach(ele => {
@@ -63,9 +70,13 @@ export default function Requests() {
   function AccepteAllRequests() {
     const ItemsId = RequestData.map(ele => ele.Acc_id);
 
-    fetch("http://localhost/airport-Project/src/BackEnd/Requests.php", {
-      method: 'POST',
-      body: new URLSearchParams([['type', 'AccepteReq'], ['ItemsId', ItemsId]])
+    // fetch("http://localhost/airport-Project/src/BackEnd/Requests.php", {
+    //   method: 'POST',
+    //   body: new URLSearchParams([['type', 'AccepteReq'], ['ItemsId', ItemsId]])
+    // });
+
+    axios.delete('http://localhost:8000/api/Requestes_accepter', {
+      data: {ItemsId: ItemsId}
     });
   }
 
@@ -83,6 +94,8 @@ export default function Requests() {
           });
         });
       });
+
+    axios.delete('http://localhost:8000/api/RemoveRequestNotAccepte');
   };
 
   if (RequestData.length > 0) {
@@ -97,8 +110,8 @@ export default function Requests() {
             {RequestData.map((ele, idx) => <RequestCard eleKey={idx} obj={ele} Data={setRequestData}/>)}
           </div>
           <div>
-            <button type="button" className='remove' onClick={DeleteAll}>Remove All</button>
             <button type="button" className='remove' onClick={DeleteRequestsNotAccepte}>Remove the request not accpted</button>
+            <button type="button" className='remove' onClick={DeleteAll}>Remove All</button>
             <button type="button" className='save' onClick={AccepteAllRequests}>Accept All</button>
             <button type="button" className='save' onClick={AccepteSomeRequests}>Accept</button>
           </div>
