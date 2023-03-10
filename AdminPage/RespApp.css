@@ -1,9 +1,9 @@
 @media (min-width: 300px) and (max-width: 350px) {
 
-    body, #root {
+    /* body, #root {
         min-width: 300px;
         min-height: 100vh;
-    }
+    } */
 
     #app > div:last-of-type {
         grid-column: span 10;

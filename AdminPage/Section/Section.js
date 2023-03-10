@@ -1,15 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { FiMenu } from 'react-icons/fi';
 
 import { useDispatch } from 'react-redux';
 
-import Stagiaire from './Stagiaire';
-import Requests from './Requests';
-import RequestAccepte from './RequestAccepte';
-
-import { Route, Routes } from 'react-router-dom';
-
-export default function Section() {
+export default function Section({ Content }) {
 
   const dispatch = useDispatch();
 
@@ -27,12 +21,7 @@ export default function Section() {
           <h1>Full Name</h1>
         </div>
         <div>
-          <Routes>
-            <Route exact path='/' element={<img src="./Images/nodata.png" className='DefaultContent' />}/>
-            <Route path='/StagiaireData' element={<Stagiaire />}/>
-            <Route path='/Requests' element={<Requests />}/>
-            <Route path='/AcceptedRequests' element={<RequestAccepte />}/>
-          </Routes>
+          {Content ? Content : <img src="./Images/nodata.png" className='DefaultContent' />}
         </div>
       </div>
     </div>

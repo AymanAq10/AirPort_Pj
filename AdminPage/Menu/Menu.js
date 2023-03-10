@@ -16,6 +16,8 @@ export default function Menu() {
 
   const Menu = useRef();
 
+  const AdminId = window.location.search;
+
   useEffect(() => {
     if (toggle) {
       Menu.current.className = 'Show';
@@ -282,16 +284,17 @@ export default function Menu() {
         </svg>
       </div>
       <ul>
-        <li><a href="/StagiaireData">Information de Stagiaire</a></li>
-        <li><a href="/Requests">Les Demande de Stage</a></li>
-        <li><a href="/AcceptedRequests">Les demandes Acceptée</a></li>
+        <li><a href={"/AdminPage/StagiaireData" + AdminId}>Information de Stagiaire</a></li>
+        <li><a href={"/AdminPage/Requests" + AdminId}>Les Demande de Stage</a></li>
+        <li><a href={"/AdminPage/AcceptedRequests" + AdminId}>Les demandes Acceptée</a></li>
+        <li><a href={"/AdminPage/AddAdmin" + AdminId}>Ajouter un Admin</a></li>
         <li onClick={PageState}>
           {pageState[0]}
           {pageState[1]} Mode
         </li>
       </ul>
       <div>
-        <a href="#">Paramètres</a>
+        <a href={"/AdminPage/updatedata" + AdminId}>Paramètres</a>
         <a href="#">Sortie</a>
       </div>
     </div>

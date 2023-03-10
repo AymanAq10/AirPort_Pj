@@ -11,14 +11,14 @@ export default function RequestAccepte() {
     const tbodyData = useRef();
 
     useEffect(() => {
-        // fetch("http://localhost/airport-Project/src/BackEnd/RequestAccepte.php", {
-        //     method: 'POST', body: new URLSearchParams([['type', 'GetRequestAccepte']])
-        // })
-        //     .then(res => res.json())
-        //     .then(data => setRequestAccepte(data));
+        fetch("http://localhost/airport-Project/src/BackEnd/RequestAccepte.php", {
+            method: 'POST', body: new URLSearchParams([['type', 'GetRequestAccepte']])
+        })
+            .then(res => res.json())
+            .then(data => setRequestAccepte(data));
 
-        axios.get('http://localhost:8000/api/Requeste_accepters')
-            .then(resp => setRequestAccepte(resp.data));
+        // axios.get('http://localhost:8000/api/Requeste_accepters')
+        //     .then(resp => setRequestAccepte(resp.data));
     }, []);
 
     function Search() {
@@ -42,11 +42,11 @@ export default function RequestAccepte() {
     }
 
     function DeleteAll() {
-        // fetch("http://localhost/airport-Project/src/BackEnd/RequestAccepte.php", {
-        //     method: "POST", body: new URLSearchParams([['type', 'RemoveAll']])
-        // });
+        fetch("http://localhost/airport-Project/src/BackEnd/RequestAccepte.php", {
+            method: "POST", body: new URLSearchParams([['type', 'RemoveAll']])
+        });
 
-        axios.delete('http://localhost:8000/api/Requeste_accepter/clear');
+        // axios.delete('http://localhost:8000/api/Requeste_accepter/clear');
 
         setRequestAccepte([]);
     }
@@ -56,11 +56,11 @@ export default function RequestAccepte() {
             return parseInt(ele.firstElementChild.textContent);
         });
 
-        // fetch("http://localhost/airport-Project/src/BackEnd/RequestAccepte.php", {
-        //     method: "POST", body: new URLSearchParams([['type', 'RemoveSome'], ['data', JSON.stringify(ItemsId)]])
-        // });
+        fetch("http://localhost/airport-Project/src/BackEnd/RequestAccepte.php", {
+            method: "POST", body: new URLSearchParams([['type', 'RemoveSome'], ['data', JSON.stringify(ItemsId)]])
+        });
 
-        axios.delete('http://localhost:8000/api/Multi-Requestes-acc', {data: {ItemId: ItemsId}});
+        // axios.delete('http://localhost:8000/api/Multi-Requestes-acc', {data: {ItemId: ItemsId}});
 
         setRequestAccepte(prev => prev.filter(ele => {
             if (!(ItemsId.find(item => item === ele.Acc_id))) {
@@ -136,7 +136,7 @@ export default function RequestAccepte() {
             </>
         );
     } else {
-        return <img src="./Images/nodata.png" className='DefaultContent' />;
+        return <img src="http://localhost:3000/Images/nodata.png" className='DefaultContent' />;
     }
 };
 

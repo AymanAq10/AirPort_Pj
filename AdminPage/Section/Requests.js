@@ -10,15 +10,15 @@ export default function Requests() {
   const parent = useRef();
 
   useEffect(() => {
-    // fetch("http://localhost/airport-Project/src/BackEnd/Requests.php", {
-    //   method: 'POST', body: new URLSearchParams([["type", "GetAllRequests"]])
-    // })
-    //   .then(resp => resp.json())
-    //   .then(data => {setRequestData(data)})
-    //   .catch(err => console.log(err))
+    fetch("http://localhost/airport-Project/src/BackEnd/Requests.php", {
+      method: 'POST', body: new URLSearchParams([["type", "GetAllRequests"]])
+    })
+      .then(resp => resp.json())
+      .then(data => {setRequestData(data)})
+      .catch(err => console.log(err))
 
-    axios.get('http://localhost:8000/api/Requestes')
-      .then(resp => setRequestData(resp.data));
+    // axios.get('http://localhost:8000/api/Requestes')
+    //   .then(resp => setRequestData(resp.data));
 
   }, []);
 
@@ -43,7 +43,11 @@ export default function Requests() {
 
   function DeleteAll() {
 
-    axios.delete('http://localhost:8000/api/requestes/clear');
+    fetch('http://localhost/airport-Project/src/BackEnd/Requests.php', {
+      method: 'POST', body: new URLSearchParams([['type', 'DeleteAllRequests']])
+    });
+
+    // axios.delete('http://localhost:8000/api/requestes/clear');
 
     setRequestData([]);
   }
@@ -53,14 +57,14 @@ export default function Requests() {
       return parseInt(ele.children[1].firstElementChild.textContent);
     });
 
-    // fetch("http://localhost/airport-Project/src/BackEnd/Requests.php", {
-    //   method: 'POST',
-    //   body: new URLSearchParams([['type', 'AccepteReq'], ['ItemsId', ItemsId]])
-    // });
-
-    axios.delete('http://localhost:8000/api/Requestes_accepter', {
-      data: {ItemsId: ItemsId}
+    fetch("http://localhost/airport-Project/src/BackEnd/Requests.php", {
+      method: 'POST',
+      body: new URLSearchParams([['type', 'AccepteReq'], ['ItemsId', ItemsId]])
     });
+
+    // axios.delete('http://localhost:8000/api/Requestes_accepter', {
+    //   data: {ItemsId: ItemsId}
+    // });
 
     Array.from(document.getElementsByClassName("CardActive")).forEach(ele => {
       ele.classList.remove('CardActive');
@@ -70,14 +74,14 @@ export default function Requests() {
   function AccepteAllRequests() {
     const ItemsId = RequestData.map(ele => ele.Acc_id);
 
-    // fetch("http://localhost/airport-Project/src/BackEnd/Requests.php", {
-    //   method: 'POST',
-    //   body: new URLSearchParams([['type', 'AccepteReq'], ['ItemsId', ItemsId]])
-    // });
-
-    axios.delete('http://localhost:8000/api/Requestes_accepter', {
-      data: {ItemsId: ItemsId}
+    fetch("http://localhost/airport-Project/src/BackEnd/Requests.php", {
+      method: 'POST',
+      body: new URLSearchParams([['type', 'AccepteReq'], ['ItemsId', ItemsId]])
     });
+
+    // axios.delete('http://localhost:8000/api/Requestes_accepter', {
+    //   data: {ItemsId: ItemsId}
+    // });
   }
 
   function DeleteRequestsNotAccepte() {
@@ -95,7 +99,7 @@ export default function Requests() {
         });
       });
 
-    axios.delete('http://localhost:8000/api/RemoveRequestNotAccepte');
+    // axios.delete('http://localhost:8000/api/RemoveRequestNotAccepte');
   };
 
   if (RequestData.length > 0) {
@@ -120,7 +124,7 @@ export default function Requests() {
       </>
     );
   } else {
-    return <img src="./Images/nodata.png" className='DefaultContent' />;
+    return <img src="http://localhost:3000/Images/nodata.png" className='DefaultContent' />;
   }
 };
 

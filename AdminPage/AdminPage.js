@@ -5,17 +5,14 @@ import './App.css';
 import './RespApp.css';
 import { Provider } from "react-redux";
 import store from './Store/store';
-import { BrowserRouter as Router } from 'react-router-dom';
 
-export default function AdminPage() {
+export default function AdminPage({ Element }) {
   return (
-    <Router>
-      <div id='app'>
-        <Provider store={store}>
-          <Menu />
-          <Section />
-        </Provider>
-      </div>
-    </Router>
+    <div id='app'>
+      <Provider store={store}>
+        <Menu />
+        <Section Content={Element} />
+      </Provider>
+    </div>
   );
 };

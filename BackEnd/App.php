@@ -223,3 +223,40 @@
             rmdir('temp');
         }
     }
+
+    class Admin {
+        private $connect;
+
+        public function __construct()
+        {
+            $this -> connect = new PDO("mysql:host=localhost:3306;dbname=airport;", 'root', '26022002');
+        }
+
+        public function GetAdmin(int $id)
+        {
+            $admin = $this -> connect -> prepare("SELECT * FROM Admin_acc WHERE AdminId = $id");
+            $admin -> execute();
+
+            $response = [];
+
+            foreach ($admin as $value) {
+                array_push($response, [
+                    'Fname' => $value['Fname'],
+                    'Lname' => $value['Lname'],
+                    'Tele' => $value['Tele'],
+                    'Acc_email' => $value['Acc_email'],
+                    '_Password' => $value['_Password']
+                ]);
+            };
+
+            return $response[0];
+        }
+
+        public function UpdateAdmin(array $obj)
+        {
+            $update = $this -> connect -> prepare("UPDATE Admin_acc SET Fname = ?, Lname = ?,
+                Tele = ?, Acc_email = ?, _Password = ? WHERE AdminId = ?");
+
+            $update -> execute($obj);
+        }
+    }
