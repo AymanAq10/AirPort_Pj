@@ -6,6 +6,7 @@
     include('App.php');
 
     $reqAc = new requestesaccepter();
+    $req = new Requests();
 
     $type = $_POST['type'];
 

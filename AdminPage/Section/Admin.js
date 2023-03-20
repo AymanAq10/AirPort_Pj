@@ -1,20 +1,30 @@
 import React, { useEffect, useState } from 'react';
 
 export default function Admin() {
+
+    // this function for add admin in database:
+        // inputs => an array contains admin data : [FirstName, LastName, Email, Thel, Password]
+        // outputs => ???
+    function AddAdmin(data) {
+        fetch("http://localhost/airport-Project/src/BackEnd/Admin.php", {
+            method: "POST", body: new URLSearchParams([['type', 'AddAdmin'],
+                ['data', JSON.stringify(data)]])
+        });
+    };
+
   return (
-    <div>
-      
+    <div id='SettingPage'>
+      <AdminForm newLabel='Comfermer Password' add={AddAdmin} />
     </div>
   );
 };
 
-export function AdminForm({ data, update }) {
-
-    const [FirstName, setFirstName] = useState(data.Fname);
-    const [LastName, setLastName] = useState(data.Lname);
-    const [Email, setEmail] = useState(data.Acc_email);
-    const [Thel, setThel] = useState(data.Tele);
-    const [Password, setPassowrd] = useState(data.Tele);
+export function AdminForm({ data, update, newLabel, add }) {
+    const [FirstName, setFirstName] = useState('');
+    const [LastName, setLastName] = useState('');
+    const [Email, setEmail] = useState('');
+    const [Thel, setThel] = useState('');
+    const [Password, setPassowrd] = useState('');
     const [NewPassword, setNewPassword] = useState('');
     const [FormData, setFormData] = useState([]);
 
@@ -22,6 +32,32 @@ export function AdminForm({ data, update }) {
         const AdminId = window.location.search.split('')[4];
         setFormData([FirstName, LastName, Thel, Email, Password, AdminId]);
     }, [FirstName, LastName, Thel, Email, Password]);
+
+    useEffect(() => {
+        if (data) {
+            setFirstName(data.Fname);
+            setLastName(data.Lname);
+            setEmail(data.Acc_email);
+            setThel(data.Tele);
+            setPassowrd(data._Password);
+        };
+    }, [data]);
+
+    const ToogleFunctions = () => {
+        if (add) {
+            add(FormData);
+        } else {
+            update(FormData, NewPassword);
+        };
+    };
+
+    const ChangeLabel = () => {
+        if (newLabel) {
+            return newLabel;
+        } else {
+            return 'Nouveau Password';
+        };
+    };
 
     return (
         <form id='AdminForm'>
@@ -47,15 +83,15 @@ export function AdminForm({ data, update }) {
             </div>
             <div>
                 <label htmlFor="Password">Password</label>
-                <input type="password" name="Password" id='Password' value={Password}
+                <input type="text" name="Password" id='Password' value={Password}
                     onChange={(e) => setPassowrd(e.target.value)} placeholder='Old Password'/>
             </div>
             <div>
-                <label htmlFor="CPassword">Nouveau Password</label>
-                <input type="password" name="CPassword" id='CPassword' value={NewPassword}
-                    onChange={(e) => setNewPassword(e.target.value)} placeholder='New Password'/>
+                <label htmlFor="CPassword">{ChangeLabel()}</label>
+                <input type="text" name="CPassword" id='CPassword' value={NewPassword}
+                    onChange={(e) => setNewPassword(e.target.value)} placeholder={ChangeLabel()} />
             </div>
-            <button type="button" id='UpdateData' onClick={() => update(FormData, NewPassword)}>Valide</button>
+            <button type="button" id='UpdateData' onClick={ToogleFunctions}>Valide</button>
           </form>
     );
 }

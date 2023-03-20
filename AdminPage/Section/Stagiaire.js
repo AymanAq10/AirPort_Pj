@@ -11,6 +11,7 @@ export default function Stagiaire() {
   const InputVal = useRef();
   const parent = useRef();
 
+  // this request is done !
   useEffect(() => {
     fetch("http://localhost/airport-Project/src/BackEnd/Statgiaire.php", {
       method: 'POST',
@@ -27,7 +28,23 @@ export default function Stagiaire() {
 
   function Search() {
     const id = parseInt(InputVal.current.value);
-    let ScrollDown = 0;
+    let ScrollDown = 0, num, moveNum;
+
+    if (window.innerWidth >= 300 && window.innerWidth < 500) {
+      num = 1; ScrollDown = 150; moveNum = 309;
+    }
+
+    else if (window.innerWidth >= 500 && window.innerWidth <= 750) {
+      num = 2; moveNum = 304;
+    }
+
+    else if (window.innerWidth > 750 && window.innerWidth <= 1100) {
+      num = 3; moveNum = 307;
+    }
+
+    else {
+      num = 3; moveNum = 309;
+    }
 
     DataStag.forEach((ele, idx) => {
       if (id === ele.Acc_id) {
@@ -37,13 +54,14 @@ export default function Stagiaire() {
           parent.current.firstElementChild.children[idx].setAttribute('style', '');
         }, 3000);
       } else {
-        if (Number.isInteger(idx / 3) && idx / 3 !== 0) {
-          ScrollDown += 309;
+        if (Number.isInteger(idx / num) && idx / num !== 0) {
+          ScrollDown += moveNum;
         }
       }
     });
   };
 
+  // this request is done !
   function DeleteItems() {
 
     const ItemsId = Array.from(document.getElementsByClassName("CardActive")).map(ele => {
@@ -68,6 +86,7 @@ export default function Stagiaire() {
     });
   };
 
+  // this request is done !
   function DeleteAll() {
     fetch("http://localhost/airport-Project/src/BackEnd/Statgiaire.php", {
       method: 'POST',
@@ -120,6 +139,7 @@ function StagiaireCards({eleKey, obj: {Acc_id, Fname, Lname, Domain, _Number, CI
     card.current.classList.toggle('CardActive');
   };
 
+  // this request is done !
   function DeleteItem() {
     card.current.classList.remove('CardActive');
 

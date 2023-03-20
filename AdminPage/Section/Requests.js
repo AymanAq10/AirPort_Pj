@@ -9,6 +9,7 @@ export default function Requests() {
   const InputVal = useRef();
   const parent = useRef();
 
+  // this request is done !
   useEffect(() => {
     fetch("http://localhost/airport-Project/src/BackEnd/Requests.php", {
       method: 'POST', body: new URLSearchParams([["type", "GetAllRequests"]])
@@ -24,7 +25,15 @@ export default function Requests() {
 
   function Search() {
     const id = parseInt(InputVal.current.value);
-    let ScrollDown = 0;
+    let ScrollDown = 0, num, moveNum;
+
+    if (window.innerWidth >= 300 && window.innerWidth < 500) {
+      num = 1; ScrollDown = 414; moveNum = 414;
+    }
+
+    else {
+      num = 1; moveNum = 414;
+    }
 
     RequestData.forEach((ele, idx) => {
       if (id === ele.Acc_id) {
@@ -34,13 +43,14 @@ export default function Requests() {
           parent.current.firstElementChild.children[idx].setAttribute('style', '');
         }, 3000);
       } else {
-        if (Number.isInteger(idx / 2) && idx / 2 !== 0) {
-          ScrollDown += 414;
+        if (Number.isInteger(idx / num) && idx / num !== 0) {
+          ScrollDown += moveNum;
         }
       }
     });
   }
 
+  // this request is done !
   function DeleteAll() {
 
     fetch('http://localhost/airport-Project/src/BackEnd/Requests.php', {
@@ -52,6 +62,7 @@ export default function Requests() {
     setRequestData([]);
   }
 
+  // this request is done !
   function AccepteSomeRequests() {
     const ItemsId = Array.from(document.getElementsByClassName("CardActive")).map(ele => {
       return parseInt(ele.children[1].firstElementChild.textContent);
@@ -60,7 +71,9 @@ export default function Requests() {
     fetch("http://localhost/airport-Project/src/BackEnd/Requests.php", {
       method: 'POST',
       body: new URLSearchParams([['type', 'AccepteReq'], ['ItemsId', ItemsId]])
-    });
+    })
+      .then(resp => resp.json())
+      .then(data => console.log(data));
 
     // axios.delete('http://localhost:8000/api/Requestes_accepter', {
     //   data: {ItemsId: ItemsId}
@@ -71,19 +84,23 @@ export default function Requests() {
     });
   }
 
+  // this request is done !
   function AccepteAllRequests() {
     const ItemsId = RequestData.map(ele => ele.Acc_id);
 
     fetch("http://localhost/airport-Project/src/BackEnd/Requests.php", {
       method: 'POST',
       body: new URLSearchParams([['type', 'AccepteReq'], ['ItemsId', ItemsId]])
-    });
+    })
+      .then(resp => resp.json())
+      .then(data => console.log(data));
 
     // axios.delete('http://localhost:8000/api/Requestes_accepter', {
     //   data: {ItemsId: ItemsId}
     // });
   }
 
+  // this request is done !
   function DeleteRequestsNotAccepte() {
     fetch("http://localhost/airport-Project/src/BackEnd/Requests.php", {
       method: 'POST', body: new URLSearchParams([['type', 'DeleteRequestsNotAccepte']])
@@ -138,6 +155,9 @@ function RequestCard({eleKey, obj: {Acc_id, Message, RequDate}, Data}) {
     card.current.classList.toggle('CardActive');
   };
 
+  // this function for delete one request from Request table
+    // inputs => request id
+    // outputs => ???
   function DeleteItem() {
     card.current.classList.remove('CardActive');
 
@@ -155,6 +175,9 @@ function RequestCard({eleKey, obj: {Acc_id, Message, RequDate}, Data}) {
     card.current.classList.toggle('CardActive');
   };
 
+  // this function for view Stagiaire CV in page
+    // inputs => Stagiaire id
+    // outputs => CV link (blob)
   function ViewPDFFile() {
     fetch('http://localhost/airport-Project/src/BackEnd/Requests.php', {
       method: "POST", body: new URLSearchParams([['type', 'viewPdfFile'], ['id', Acc_id]])
@@ -173,6 +196,9 @@ function RequestCard({eleKey, obj: {Acc_id, Message, RequDate}, Data}) {
       card.current.classList.toggle("CardActive");
   }
 
+  // this function for view Stagiaire CV in page
+    // inputs => Stagiaire id
+    // outputs => CV link (blob)
   function DownoaldPDFFile() {
     fetch('http://localhost/airport-Project/src/BackEnd/Requests.php', {
       method: "POST", body: new URLSearchParams([['type', 'DawnoaldPdfFile'], ['id', Acc_id]])

@@ -4,7 +4,8 @@ import Section from './Section/Section';
 import './App.css';
 import './RespApp.css';
 import { Provider } from "react-redux";
-import store from './Store/store';
+// import store from './Store/store';
+import store from '../Store/store';
 
 export default function AdminPage({ Element }) {
   return (

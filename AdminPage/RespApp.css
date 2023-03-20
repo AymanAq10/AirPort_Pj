@@ -35,7 +35,8 @@
     }
 
     #app > div:first-of-type > ul li {
-        font-size: .7rem;
+        font-size: .9rem;
+        margin: 8px auto;
     }
 
     #app > div:first-of-type > div:first-child {
@@ -47,7 +48,8 @@
 
     #app > div:first-of-type > div:last-child a {
         height: calc(55% / 2);
-        font-size: .8rem;
+        font-size: .9rem;
+        margin: 5px 0;
     }
 
     .Hide {
@@ -80,7 +82,7 @@
         padding: 0 5px;
     }
 
-    #container > div:last-of-type > div:first-of-type button {
+    #container > div:last-of-type > div:first-of-type button:not(#UpdateData) {
         width: 50px;
         height: 25px;
     }
@@ -130,6 +132,26 @@
         flex-wrap: wrap;
         width: 100%;
     }
+
+    #app > div:first-of-type > ul {
+        justify-content: center;
+    }
+
+    #app > div:first-of-type > div:last-child {
+        justify-content: center;
+    }
+
+    #RequestAccepte #btnContainer > button {
+        width: 80%;
+    }
+
+    #SettingPage > #AdminForm > div:nth-child(odd) {
+        grid-column: span 11;
+    }
+
+    #SettingPage > #AdminForm > div:nth-child(even) {
+        grid-column: span 11;
+    }
 }
 
 @media (min-width: 350px) and (max-width: 515px) {
@@ -155,7 +177,7 @@
         padding: 0 5px;
     }
 
-    #container > div:last-of-type > div:first-of-type button {
+    #container > div:last-of-type > div:first-of-type button:not(#UpdateData) {
         width: 60px;
         height: 25px;
     }
@@ -164,6 +186,45 @@
         grid-column: span 6;
         width: 80%;
         margin: 0 auto;
+    }
+
+    #app > div:first-of-type > div:last-child {
+        justify-content: center;
+    }
+
+    #app > div:first-of-type > div:last-child a {
+        width: 80%;
+        height: calc(65% / 2);
+        font-size: 1rem;
+        margin: 5px 0;
+    }
+
+    #app > div:first-of-type > ul {
+        justify-content: center;
+    }
+
+    #app > div:first-of-type > ul li {
+        font-size: .9rem;
+        margin: 8px auto;
+    }
+
+    #RequestData > div:first-of-type > .ReqCards > div:last-of-type {
+        display: flex;
+        justify-content: center;
+    }
+
+    #RequestAccepte #btnContainer > div:first-child {
+        flex-wrap: wrap;
+        width: 100%;
+    }
+
+    #RequestAccepte #btnContainer > button {
+        width: 90%;
+    }
+
+    #RequestAccepte #btnContainer {
+        flex-direction: column;
+        transform: scale(1.1);
     }
 }
 
@@ -197,14 +258,9 @@
         visibility: visible;
     }
 
-    #app > div:first-of-type > ul li {
+    /* #app > div:first-of-type > ul li {
         font-size: .8rem;
-    }
-
-    #app > div:first-of-type > div:last-child a {
-        height: calc(65% / 2);
-        font-size: 1rem;
-    }
+    } */
 
 
     .Hide {
@@ -257,6 +313,26 @@
         grid-column: span 3;
         width: 100%;
     }
+
+    #StagiaireData > div:first-of-type,
+    #RequestData > div:first-of-type {
+        column-gap: 4px;
+        row-gap: 4px;
+    }
+
+    #RequestAccepte #btnContainer > div:first-child {
+        flex-wrap: wrap;
+        width: 100%;
+    }
+
+    #RequestAccepte #btnContainer > button {
+        width: 95%;
+        margin-top: 5px;
+    }
+
+    #RequestAccepte #btnContainer {
+        flex-direction: column;
+    }
 }
 
 @media (min-width: 516px) and (max-width: 750px) {
@@ -286,6 +362,7 @@
 
     #RequestData > div:first-of-type > .ReqCards > div:last-of-type {
         display: flex;
+        justify-content: center;
     }
 }
 
@@ -331,6 +408,26 @@
         font-size: 1.1rem;
         visibility: visible;
     }
+
+    #StagiaireData > div:first-of-type,
+    #RequestData > div:first-of-type {
+        column-gap: 7px;
+        row-gap: 7px;
+    }
+
+    #RequestAccepte #btnContainer > div:first-child {
+        flex-wrap: wrap;
+        width: 100%;
+    }
+
+    #RequestAccepte #btnContainer > button {
+        width: 55%;
+        margin-top: 5px;
+    }
+
+    #RequestAccepte #btnContainer {
+        flex-direction: column;
+    }
 }
 
 @media (min-width: 1001px) and (max-width: 1100px) {
@@ -345,5 +442,11 @@
 
     #app > div:last-of-type {
         grid-column: span 8;
+    }
+
+    #StagiaireData > div:first-of-type,
+    #RequestData > div:first-of-type {
+        column-gap: 7px;
+        row-gap: 7px;
     }
 }

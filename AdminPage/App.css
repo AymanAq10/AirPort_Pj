@@ -3,7 +3,8 @@
     padding: 0;
     box-sizing: border-box;
     outline: none;
-    font-family: Arial, Helvetica, sans-serif;
+    /* font-family: Arial, Helvetica, sans-serif; */
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
 :root {
@@ -308,9 +309,9 @@ table, thead, tbody, tr, th, td {
 #StagiaireData > div:last-of-type .save, #RequestData > div:last-of-type .save,
 #RequestAccepte #btnContainer > div:first-child .save {
     transition: .3s;
-    border: 2px solid #2c2c2c;
+    border: 2px solid black;
     background: none;
-    color: #2c2c2c;
+    color: black;
 }
 
 #StagiaireData > div:last-of-type > .save:hover, #RequestData > div:last-of-type > .save:hover,

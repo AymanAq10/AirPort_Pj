@@ -18,4 +18,9 @@
         $Admin -> UpdateAdmin($ArrData);
     }
 
+    elseif ($type == 'AddAdmin') {
+        $data = json_decode($_POST['data']);
+        new Admin($data[0], $data[1], $data[2], $data[3], $data[4]);
+    }
+
 ?>

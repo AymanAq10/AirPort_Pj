@@ -34,12 +34,18 @@ export default function Menu() {
 
     if (pageState[1] === 'Light') {
       ele.className = 'LightMode';
+      if (document.getElementById("btnContainer")) {
+        document.getElementById("btnContainer").className = 'LightMode';
+      }
 
       localStorage.PageState = JSON.stringify(['LightMode', 'Light']);
     }
 
     else {
       ele.className = 'DarkMode';
+      if (document.getElementById("btnContainer")) {
+        document.getElementById("btnContainer").className = 'DarkMode';
+      }
 
       localStorage.PageState = JSON.stringify(['DarkMode', 'Dark']);
     }
@@ -51,6 +57,16 @@ export default function Menu() {
 
     if (localStorage.PageState) {
       ele.className = JSON.parse(localStorage.PageState)[0];
+
+      if (JSON.parse(localStorage.PageState)[0] === 'DarkMode') {
+        if (document.getElementById("btnContainer")) {
+          document.getElementById("btnContainer").className = 'DarkMode';
+        }
+      } else {
+        if (document.getElementById("btnContainer")) {
+          document.getElementById("btnContainer").className = 'LightMode';
+        }
+      }
     };
   }, []);
 
@@ -284,9 +300,9 @@ export default function Menu() {
         </svg>
       </div>
       <ul>
-        <li><a href={"/AdminPage/StagiaireData" + AdminId}>Information de Stagiaire</a></li>
-        <li><a href={"/AdminPage/Requests" + AdminId}>Les Demande de Stage</a></li>
-        <li><a href={"/AdminPage/AcceptedRequests" + AdminId}>Les demandes Acceptée</a></li>
+        <li><a href={"/AdminPage/StagiaireData" + AdminId}>Information des Stagiaires</a></li>
+        <li><a href={"/AdminPage/Requests" + AdminId}>Les Demande des Stages</a></li>
+        <li><a href={"/AdminPage/AcceptedRequests" + AdminId}>Les demandes Acceptées</a></li>
         <li><a href={"/AdminPage/AddAdmin" + AdminId}>Ajouter un Admin</a></li>
         <li onClick={PageState}>
           {pageState[0]}
@@ -295,7 +311,7 @@ export default function Menu() {
       </ul>
       <div>
         <a href={"/AdminPage/updatedata" + AdminId}>Paramètres</a>
-        <a href="#">Sortie</a>
+        <a href="http://localhost:3000">Sortie</a>
       </div>
     </div>
   );

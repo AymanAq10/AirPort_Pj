@@ -9,7 +9,9 @@ export default function RequestAccepte() {
 
     const InputVal = useRef();
     const tbodyData = useRef();
+    const Content = useRef();
 
+    // this request is done !
     useEffect(() => {
         fetch("http://localhost/airport-Project/src/BackEnd/RequestAccepte.php", {
             method: 'POST', body: new URLSearchParams([['type', 'GetRequestAccepte']])
@@ -22,7 +24,23 @@ export default function RequestAccepte() {
     }, []);
 
     function Search() {
-        
+        const InputValue = InputVal.current.value, tbodyChilds = Array.from(tbodyData.current.children);
+        let ScrollDown = 0;
+
+        for (let ele of tbodyChilds) {
+            if (ele.firstElementChild.textContent === InputValue) {
+                ele.className = 'ActiveRow';
+                setTimeout(() => {
+                    ele.className = '';
+                }, 5000);
+                break;
+            }
+            else {
+                ScrollDown += 33;
+            }
+        }
+
+        Content.current.scrollTo({left : 0, top : ScrollDown, behavior : "smooth"});
     };
 
     function SomeDataRequestAccepte() {
@@ -41,6 +59,7 @@ export default function RequestAccepte() {
         });
     }
 
+    // this request is done !
     function DeleteAll() {
         fetch("http://localhost/airport-Project/src/BackEnd/RequestAccepte.php", {
             method: "POST", body: new URLSearchParams([['type', 'RemoveAll']])
@@ -51,6 +70,7 @@ export default function RequestAccepte() {
         setRequestAccepte([]);
     }
 
+    // this request is done !
     function DeleteItems() {
         const ItemsId = Array.from(document.getElementsByClassName("ActiveRow")).map(ele => {
             return parseInt(ele.firstElementChild.textContent);
@@ -73,25 +93,18 @@ export default function RequestAccepte() {
         });
     }
 
-    function DownloadCV() {
+    // this function for downoald All Stagiaire CV from Requestaccepter table
+        // inputs => ???
+        // outputs => All Stagiaires CV (pdf) in my pc
+    function DownloadAllCV() {
+        // const Items = RequestAccepte.map(ele => ele.Acc_id);
+
         fetch('http://localhost/airport-Project/src/BackEnd/RequestAccepte.php', {
-            method: "POST", body: new URLSearchParams([['type', 'DownoaldAllCV']])
-        })
-            .then(response => {
-              if (!response.ok) {
-                throw new Error('Failed to download PDFs');
-              }
-              return response.blob();
-            })
-            .then(blob => {
-              const url = window.URL.createObjectURL(blob);
-              const a = document.createElement('a');
-              a.href = url;
-              a.download = 'pdfs.zip';
-              a.click();
-              a.remove();
-            })
-            .catch(error => console.error(error));
+            method: "POST",
+            body: new URLSearchParams([
+                ['type', 'DownoaldAllCV']
+            ])
+        });
     }
 
     if (RequestAccepte.length > 0) {
@@ -102,7 +115,7 @@ export default function RequestAccepte() {
                   <button type="button" onClick={Search}>Search</button>
                 </div>
                 <div id='RequestAccepte'>
-                    <div>
+                    <div ref={Content}>
                         <table>
                             <thead>
                                 <tr>
@@ -127,7 +140,7 @@ export default function RequestAccepte() {
                     <div id='btnContainer'>
                         <ListButton all={RequestAccepte} some={SomeRequestAccepte} someData={SomeDataRequestAccepte}
                             deleteall={DeleteAll} deletesome={DeleteItems}/>
-                        <button type="button" onClick={DownloadCV}>
+                        <button type="button" onClick={DownloadAllCV}>
                             <span className="material-symbols-outlined">download</span>
                             <span style={{ marginLeft: "5px" }}>Downoald All CV</span>
                         </button>
