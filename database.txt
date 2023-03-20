@@ -1,0 +1,104 @@
+create database airport;
+-- drop database airport;
+use airport;
+
+
+
+
+create table Stagiaire_acc (
+	Acc_id int not null primary key auto_increment,
+    Fname varchar(10) not null,
+    Lname varchar(10) not null,
+    Domain varchar(10) not null,
+    _Number varchar(13) not null,
+    Acc_email varchar(30) not null,
+    CIN varchar(8) not null,
+    _Password varchar(20),
+    ImageProfile longblob null
+);
+
+create table Admin_acc (
+	AdminId int not null primary key auto_increment,
+    Fname varchar(10) not null,
+    Lname varchar(10) not null,
+    Thel varchar(13) not null,
+    email varchar(30) not null,
+    _Password varchar(20)
+);
+
+create table Requests (
+    Acc_id int not null primary key,
+    StagiaireCV longblob not null,
+    Message longtext,
+    RequDate date,
+    
+    foreign key (Acc_id) references Stagiaire_acc(Acc_id)
+);
+
+create table RequestesAccepter (
+	Acc_id int not null primary key,
+    RequDateAcc date not null,
+    
+    foreign key(Acc_id) references Stagiaire_acc(Acc_id) 
+);
+
+select * from Stagiaire_acc;
+select * from Admin_acc;
+select * from Requests;
+select * from RequestesAccepter;
+
+SELECT StagiaireCV FROM Requests;
+
+
+-- /////// this trigger removes the items in table 'requests' and 'RequestesAccepter' when delete a item in table Stagiaire_acc
+Delimiter $
+create trigger onDeleteStagiaire before delete on stagiaire_acc for each row
+begin
+	delete from requests where Acc_id = old.Acc_id;
+    delete from RequestesAccepter where Acc_id = old.Acc_id;
+end $
+Delimiter ;
+
+
+-- ////////// this trigger delete item from RequestesAccepter table if delete all item information from Requests table
+Delimiter $
+create trigger onDeleteRequest after delete on Requests for each row
+begin
+	delete from RequestesAccepter where Acc_id = old.Acc_id;
+end $
+Delimiter ;
+
+
+-- /////// this procedure remove all Requests table items if Requests table items id not in RequestesAccepter table
+Delimiter $
+create procedure RemoveRequestsNotAccepte ()
+begin
+	declare id int default (select count(Acc_id) from Requests where Acc_id not in (select Acc_id from RequestesAccepter));
+    declare i int default 0;
+    declare targetId int;
+    DECLARE my_cursor CURSOR FOR select Acc_id from Requests where Acc_id not in (select Acc_id from RequestesAccepter);
+    
+    OPEN my_cursor;
+    
+    while i < id do
+    
+		FETCH my_cursor INTO targetId;
+        delete from Requests where Acc_id = targetId;
+        
+        set i = i + 1;
+    
+    end while;
+    
+    CLOSE my_cursor;
+        
+end $
+Delimiter ;
+
+drop procedure RemoveRequestsNotAccepte;
+
+show table status;
+show triggers;
+show procedure status;
+show columns from requests;
+
+SET GLOBAL max_allowed_packet=924288000;
