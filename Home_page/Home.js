@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 
 import { useDispatch } from 'react-redux';
 import { useEffect, useRef, useState } from 'react';
+import axios from 'axios';
 
 function Home({ Profile }) {
 
@@ -13,20 +14,11 @@ function Home({ Profile }) {
     const ToRequestPage = useRef();
     const mobile69 = useRef();
 
-    // this function for search a satagiaire
-        // inputs => Stagiaire id
-        // outputs => returns true if stagiaire finded else returns false
     useEffect(() => {
         const AdminId = window.location.search.split('=')[1];
 
-        fetch("http://localhost/airport-Project/src/BackEnd/Statgiaire.php", {
-            method: "POST", body: new URLSearchParams([
-                ['type', 'SearchStagiaire'],
-                ['id', AdminId]
-            ])
-        })
-            .then(resp => resp.json())
-            .then(data => setCheck(data));
+        axios.get(`http://localhost:8000/api/Stagires/track/${AdminId}`)
+        .then(data => setCheck(data.data))
     }, []);
 
     useEffect(() => {
