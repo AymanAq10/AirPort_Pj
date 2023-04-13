@@ -13,14 +13,8 @@ export default function RequestAccepte() {
 
     // this request is done !
     useEffect(() => {
-        fetch("http://localhost/airport-Project/src/BackEnd/RequestAccepte.php", {
-            method: 'POST', body: new URLSearchParams([['type', 'GetRequestAccepte']])
-        })
-            .then(res => res.json())
-            .then(data => setRequestAccepte(data));
-
-        // axios.get('http://localhost:8000/api/Requeste_accepters')
-        //     .then(resp => setRequestAccepte(resp.data));
+        axios.get('http://localhost:8000/api/Requeste_accepters')
+            .then(resp => setRequestAccepte(resp.data));
     }, []);
 
     function Search() {
@@ -61,11 +55,7 @@ export default function RequestAccepte() {
 
     // this request is done !
     function DeleteAll() {
-        fetch("http://localhost/airport-Project/src/BackEnd/RequestAccepte.php", {
-            method: "POST", body: new URLSearchParams([['type', 'RemoveAll']])
-        });
-
-        // axios.delete('http://localhost:8000/api/Requeste_accepter/clear');
+        axios.delete('http://localhost:8000/api/Requeste_accepter/clear');
 
         setRequestAccepte([]);
     }
@@ -75,12 +65,7 @@ export default function RequestAccepte() {
         const ItemsId = Array.from(document.getElementsByClassName("ActiveRow")).map(ele => {
             return parseInt(ele.firstElementChild.textContent);
         });
-
-        fetch("http://localhost/airport-Project/src/BackEnd/RequestAccepte.php", {
-            method: "POST", body: new URLSearchParams([['type', 'RemoveSome'], ['data', JSON.stringify(ItemsId)]])
-        });
-
-        // axios.delete('http://localhost:8000/api/Multi-Requestes-acc', {data: {ItemId: ItemsId}});
+        axios.delete('http://localhost:8000/api/Multi-Requestes-acc', {data: {ItemId: ItemsId}});
 
         setRequestAccepte(prev => prev.filter(ele => {
             if (!(ItemsId.find(item => item === ele.Acc_id))) {
@@ -93,19 +78,26 @@ export default function RequestAccepte() {
         });
     }
 
-    // this function for downoald All Stagiaire CV from Requestaccepter table
+    // this function for downoald All Stz3 agiaire CV from Requestaccepter table
         // inputs => ???
         // outputs => All Stagiaires CV (pdf) in my pc
-    function DownloadAllCV() {
-        // const Items = RequestAccepte.map(ele => ele.Acc_id);
+        function DownloadAllCV() {
+            axios.get('http://localhost:8000/api/Requeste_accepters/download-cv', {responseType: 'blob'})
+            .then(response => {
+                const currentDate = new Date();
+                const formattedDate = currentDate.toLocaleDateString('en-US').replace(/\//g, '-');
 
-        fetch('http://localhost/airport-Project/src/BackEnd/RequestAccepte.php', {
-            method: "POST",
-            body: new URLSearchParams([
-                ['type', 'DownoaldAllCV']
-            ])
-        });
-    }
+
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${formattedDate} cvs.zip`;
+                a.click();
+                window.URL.revokeObjectURL(url);
+                a.remove();
+              });;
+        }
+        
 
     if (RequestAccepte.length > 0) {
         return (
@@ -141,7 +133,7 @@ export default function RequestAccepte() {
                         <ListButton all={RequestAccepte} some={SomeRequestAccepte} someData={SomeDataRequestAccepte}
                             deleteall={DeleteAll} deletesome={DeleteItems}/>
                         <button type="button" onClick={DownloadAllCV}>
-                            <span className="material-symbols-outlined">download</span>
+                            {/* <span className="material-symbols-outlined">download</span> */}
                             <span style={{ marginLeft: "5px" }}>Downoald All CV</span>
                         </button>
                     </div>

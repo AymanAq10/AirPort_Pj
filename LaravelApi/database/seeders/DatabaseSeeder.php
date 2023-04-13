@@ -30,7 +30,7 @@ class DatabaseSeeder extends Seeder
         // Stagiaire_acc::factory(20)->create();
         Requests::factory(20)->create();
         // RequestesAccepter::factory(10)->create();
-        // Admin_acc::factory(10)->create();
+        Admin_acc::factory(10)->create();
 
     }
 }

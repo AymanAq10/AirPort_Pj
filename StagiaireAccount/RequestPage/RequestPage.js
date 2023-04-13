@@ -1,11 +1,15 @@
+import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import Request from './RequestPage.module.css';
 
 export default function RequestPage() {
 
-    const [message, setmassage] = useState('');
 
     const file = useRef();
+
+    function AddCv() {
+        file.current.click();
+    };
 
     const StagiaireId = window.location.search.split('=')[1];
 
@@ -15,43 +19,24 @@ export default function RequestPage() {
         }, 500);
     }, []);
 
-    function AddCv() {
-        file.current.click();
-    };
+    
+    function SendRequest(e) {
+        e.preventDefault()
 
-    function SendRequest() {
+        
+        axios.get(`http://localhost:8000/api/Stagires/Requestes/Finder/${StagiaireId}`)
+        .then(data => {
+                if (!data.data.success) {
 
-        // this function for check request to request table
-            // inputs => stagiaire id
-            // outputs => returns true if the request finded else returns flase
-        fetch("http://localhost/airport-Project/src/BackEnd/Requests.php", {
-            method: "POST", body: new URLSearchParams([
-                ['type', 'CheckRequest'],
-                ['ItemId', StagiaireId]
-            ])
-        })
-            .then(resp => resp.json())
-            .then(data => {
-                if (!data) {
+                    const formData      = new FormData();
+                    formData.append('Acc_id', StagiaireId)
+                    formData.append('Message', e.target.elements.message.value)
+                    formData.append('StagiaireCV', e.target.elements.CV.files[0])
 
-                    // this request for send Request in request table
-                        // inputs => array [Stagiaire id, message, CV (pdf file)]
-                        // outputs => ???
-                    const file = document.getElementById("file");
-
-                    const formData = new FormData();
-                    formData.append('type', 'AddRequest');
-                    formData.append('data', JSON.stringify([StagiaireId, message]));
-                    formData.append('pdf_file', file.files[0]);
-
-                    fetch("http://localhost/airport-Project/src/BackEnd/Requests.php", {
-                        method: "POST",
-                        body: formData
-                    });
-
-                    setmassage('');
+                    axios.post('http://localhost:8000/api/Requestes', formData )
+                    .finally(alert('The request has been submitted!'))
                 } else {
-                    alert("You are sended a request !!");
+                    alert("You already sent a request!");
                 }
             });
     };
@@ -61,21 +46,20 @@ export default function RequestPage() {
       <div>
         <div>
             <h2>Entez votre information pour demande de stage</h2>
-            <form>
+            <form onSubmit={SendRequest}>
                 <div>
                     <label htmlFor="message">Ton Message</label>
-                    <textarea id='message' placeholder='Message' name='message'
-                        value={message} onChange={e => setmassage(e.target.value)}></textarea>
+                    <textarea id='message' placeholder='Message' name='message' ></textarea>
                 </div>
                 <div onClick={AddCv}>
-                    <input ref={file} id="file" type="file" name="CV" style={{ display: 'none' }} />
+                    <input ref={file} type="file" name="CV" style={{ display: 'none' }} />
                     <div>
                         <span className="material-symbols-outlined">download</span>
                         <p>Ajouter votre CV</p>
                     </div>
                 </div>
                 <div>
-                    <button type="button" onClick={SendRequest}>Envoyer la demande</button>
+                <button type="submit" >Envoyer la demande</button>
                 </div>
             </form>
         </div>

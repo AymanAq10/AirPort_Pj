@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { AdminForm } from './Admin';
 
@@ -10,14 +11,11 @@ export default function Setting() {
 
   // this function for fetch all admin data
     // inputs => admin id
-    // outputs => object contains amin data : {Fname: '', Lname: '', Email: '', Thel: '', Password: ''}
+    // outputs => object contains amin data : {Fname: '', Lname: '', Acc_email: '', Tele: '', _Password: ''}
   useEffect(() => {
-
-    fetch("http://localhost/airport-Project/src/BackEnd/Admin.php", {
-      method: 'POST', body: new URLSearchParams([['type', 'GetAdmin'], ['Adminid', AdminId]])
-    })
-      .then(resp => resp.json())
-      .then(data => setAdminData(data));
+    
+    axios.get(`http://localhost:8000/api/Admin-D/${AdminId}`)
+    .then(data => setAdminData(data.data))
 
   }, []);
 
@@ -25,16 +23,16 @@ export default function Setting() {
     // inputs => array of admin data : [Fname, Lname, Email, Thel, Password]
     // outputs => ???
   function UpdateData(obj, newPassword) {
-    if (newPassword !== obj[4]) {
+    if (newPassword !== obj[0]['password']) {
 
       if (newPassword) {
-        obj[4] = newPassword;
+        obj[0]['password'] = newPassword; 
       };
 
-      fetch('http://localhost/airport-Project/src/BackEnd/Admin.php', {
-        method: "POST", body: new URLSearchParams([['type', 'UpdateAdmin'],
-          ['ArrData', JSON.stringify(obj)]])
-      });
+      axios.put(`http://localhost:8000/api/Admins/${AdminId}`, obj)
+      .finally(() => alert('Updated successfully!'))
+
+
     } else {
       alert('The Password Not Valide!');
     };

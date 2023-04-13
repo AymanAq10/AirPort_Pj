@@ -11,15 +11,9 @@ export default function Requests() {
 
   // this request is done !
   useEffect(() => {
-    fetch("http://localhost/airport-Project/src/BackEnd/Requests.php", {
-      method: 'POST', body: new URLSearchParams([["type", "GetAllRequests"]])
-    })
-      .then(resp => resp.json())
-      .then(data => {setRequestData(data)})
-      .catch(err => console.log(err))
 
-    // axios.get('http://localhost:8000/api/Requestes')
-    //   .then(resp => setRequestData(resp.data));
+    axios.get('http://localhost:8000/api/Requestes')
+      .then(resp => setRequestData(resp.data));
 
   }, []);
 
@@ -53,11 +47,7 @@ export default function Requests() {
   // this request is done !
   function DeleteAll() {
 
-    fetch('http://localhost/airport-Project/src/BackEnd/Requests.php', {
-      method: 'POST', body: new URLSearchParams([['type', 'DeleteAllRequests']])
-    });
-
-    // axios.delete('http://localhost:8000/api/requestes/clear');
+    axios.delete('http://localhost:8000/api/requestes/clear');
 
     setRequestData([]);
   }
@@ -68,16 +58,9 @@ export default function Requests() {
       return parseInt(ele.children[1].firstElementChild.textContent);
     });
 
-    fetch("http://localhost/airport-Project/src/BackEnd/Requests.php", {
-      method: 'POST',
-      body: new URLSearchParams([['type', 'AccepteReq'], ['ItemsId', ItemsId]])
-    })
-      .then(resp => resp.json())
-      .then(data => console.log(data));
-
-    // axios.delete('http://localhost:8000/api/Requestes_accepter', {
-    //   data: {ItemsId: ItemsId}
-    // });
+    axios.delete('http://localhost:8000/api/Requestes_accepter', {
+      data: {ItemsId: ItemsId}
+    });
 
     Array.from(document.getElementsByClassName("CardActive")).forEach(ele => {
       ele.classList.remove('CardActive');
@@ -88,35 +71,16 @@ export default function Requests() {
   function AccepteAllRequests() {
     const ItemsId = RequestData.map(ele => ele.Acc_id);
 
-    fetch("http://localhost/airport-Project/src/BackEnd/Requests.php", {
-      method: 'POST',
-      body: new URLSearchParams([['type', 'AccepteReq'], ['ItemsId', ItemsId]])
-    })
-      .then(resp => resp.json())
-      .then(data => console.log(data));
-
-    // axios.delete('http://localhost:8000/api/Requestes_accepter', {
-    //   data: {ItemsId: ItemsId}
-    // });
+    axios.delete('http://localhost:8000/api/Requestes_accepter', {
+      data: {ItemsId: ItemsId}
+    });
   }
 
   // this request is done !
   function DeleteRequestsNotAccepte() {
-    fetch("http://localhost/airport-Project/src/BackEnd/Requests.php", {
-      method: 'POST', body: new URLSearchParams([['type', 'DeleteRequestsNotAccepte']])
-    })
-      .then(res => res.json())
-      .then(data => {
-        setRequestData(prev => {
-          return prev.filter(ele => {
-            if (data.find((id) => ele.Acc_id === id)) {
-              return ele;
-            }
-          });
-        });
-      });
 
-    // axios.delete('http://localhost:8000/api/RemoveRequestNotAccepte');
+    axios.delete('http://localhost:8000/api/RemoveRequestNotAccepte');
+
   };
 
   if (RequestData.length > 0) {
@@ -161,10 +125,7 @@ function RequestCard({eleKey, obj: {Acc_id, Message, RequDate}, Data}) {
   function DeleteItem() {
     card.current.classList.remove('CardActive');
 
-    fetch("http://localhost/airport-Project/src/BackEnd/Requests.php", {
-      method: 'POST',
-      body: new URLSearchParams([['type', 'DeleteRequest'], ['ItemId', Acc_id]])
-    });
+    axios.delete(`http://localhost:8000/api/Requestes/${Acc_id}`)
 
     Data(prev => prev.filter(ele => {
       if (ele.Acc_id !== Acc_id) {
@@ -178,42 +139,39 @@ function RequestCard({eleKey, obj: {Acc_id, Message, RequDate}, Data}) {
   // this function for view Stagiaire CV in page
     // inputs => Stagiaire id
     // outputs => CV link (blob)
-  function ViewPDFFile() {
-    fetch('http://localhost/airport-Project/src/BackEnd/Requests.php', {
-      method: "POST", body: new URLSearchParams([['type', 'viewPdfFile'], ['id', Acc_id]])
-    })
-      .then(response => response.blob())
-      .then(blob => {
+    function ViewPDFFile() {
+      axios.get(`http://localhost:8000/api/Requestes/V-CV/${Acc_id}`, {
+        responseType: 'blob' 
+      })
+      .then(response => {
+        const blob = new Blob([response.data], { type: 'application/pdf' }); // create a Blob object from the downloaded file content
         const url = URL.createObjectURL(blob);
         const embedPdfFile = document.getElementById("embedPdfFile");
         const PdfFile_View = document.querySelector(".PdfFile_View");
-
         PdfFile_View.style.display = 'block';
         embedPdfFile.src = url;
+    
       })
       .catch(error => console.log(error));
-
+    
       card.current.classList.toggle("CardActive");
-  }
+    }
 
   // this function for view Stagiaire CV in page
     // inputs => Stagiaire id
     // outputs => CV link (blob)
   function DownoaldPDFFile() {
-    fetch('http://localhost/airport-Project/src/BackEnd/Requests.php', {
-      method: "POST", body: new URLSearchParams([['type', 'DawnoaldPdfFile'], ['id', Acc_id]])
-    })
-      .then(res => res.blob())
-      .then(blob => {
-        const url = window.URL.createObjectURL(new Blob([blob]));
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'file.pdf';
-        a.click();
-        window.URL.revokeObjectURL(url);
-        a.remove();
-      });
 
+    axios.get(`http://localhost:8000/api/Requestes/V-CV/${Acc_id}`, { responseType: 'blob' })
+    .then(response => {
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'file.pdf';
+      a.click();
+      window.URL.revokeObjectURL(url);
+      a.remove();
+    })
       card.current.classList.toggle("CardActive");
   }
 
@@ -231,7 +189,7 @@ function RequestCard({eleKey, obj: {Acc_id, Message, RequDate}, Data}) {
           <p>View CV</p>
         </button>
         <button type="button" onClick={DownoaldPDFFile}>
-          <span className="material-symbols-outlined">download</span>
+          {/* <span className="material-symbols-outlined">download</span> */}
           <p>Downoald CV</p>
         </button>
       </div>

@@ -1,5 +1,7 @@
+import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import { CgArrowLeftR } from "react-icons/cg";
+import { redirect } from "react-router-dom";
 import './profile.css';
 
 
@@ -11,9 +13,11 @@ export default function Profile() {
     const [Number, setNumber] = useState('');
     const [Email, setEmail] = useState('');
     const [CIN, setCIN] = useState('');
-    const [Password, setPassword] = useState('');
-    const [_Password, set_Password] = useState('');
-    const [Profile, setProfile] = useState('/Images/Profile.png');
+    const [checkOldPassword, setCheckOldPassword] = useState('');
+    const [oldPassword, setOldPassword] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+    const [conPassword, setConPassword] = useState('');
+    const [Profile, setProfile] = useState();
 
     const File = useRef();
 
@@ -27,22 +31,18 @@ export default function Profile() {
             document.body.className = '';
         }, 500);
 
-        fetch("http://localhost/airport-Project/src/BackEnd/Statgiaire.php", {
-            method: "POST", body: new URLSearchParams([['type', 'GetUserData'], ['id', StagiaireId]])
-        })
-            .then(resp => resp.json())
-            .then(data => {
-                setFirstName(data.Fname); setLastName(data.Lname);
-                setDomain(data.Domain); setNumber(data._Number);
-                setCIN(data.CIN); setEmail(data.Acc_email);
-                setProfile(() => {
-                    if (data.ImageProfile) {
-                        return 'data:image/png;base64,' + data.ImageProfile;
-                    };
-                });
-
-                set_Password(data._Password);
-            });
+        setTimeout(() => {
+        axios.get(`http://localhost:8000/api/Stagires/track/${StagiaireId}`)
+        .then(data => {
+            setFirstName(data.data.Fname);   setLastName(data.data.Lname);
+            setDomain(data.data.Domain);     setNumber(data.data._Number);
+            setCIN(data.data.CIN);           setEmail(data.data.Acc_email);
+            
+            setProfile(`${data.data.ImageProfile}`)
+            
+            setCheckOldPassword(data.data._Password);
+        });
+        }, 600);
     }, []);
 
     // this function for update stagiaire data
@@ -51,30 +51,34 @@ export default function Profile() {
     function UpdateData(e) {
         e.preventDefault();
 
-        const data = [
-            FirstName, LastName, Domain, Number, CIN, Email, Profile, StagiaireId
-        ];
+        const data = [{FirstName, LastName, Domain, Number, CIN, Email, Profile, conPassword, StagiaireId}];
 
-        if (Password === _Password) {
-            fetch("http://localhost/airport-Project/src/BackEnd/Statgiaire.php", {
-                method: "POST", body: new URLSearchParams([['type', 'UpdateData'],
-                    ['data', JSON.stringify(data)]])
-            });
+        if (newPassword === conPassword) {
+            if (oldPassword === checkOldPassword) {
+                axios.put(`http://localhost:8000/api/Stagires/${StagiaireId}`, data)
+            }
+            else{
+                alert('Old password isn\'t valid')
+            }
         } else {
-            alert('The password incorrect !');
+            alert('Password confirmation doesn\'t match the password');
         }
     }
 
     function ChangeProfile() {
         const file = File.current.files[0];
         const reader = new FileReader();
-
+      
         reader.addEventListener("load", () => {
-          setProfile(reader.result);
+          
+          const base64Image = reader.result.replace(/^data:image\/(png|jpeg|jpg);base64,/, "");
+          setProfile(base64Image);
+
         });
-    
+
         reader.readAsDataURL(file);
-    }
+      }
+      
 
     return(
         <>
@@ -85,15 +89,17 @@ export default function Profile() {
                 </nav>
                 <div className="Profile_info">
                         <div className="Profile_info_back_btn">
-                            <button> <CgArrowLeftR /> </button>
+                            <button onClick={() => window.location.href = `/Account?id=${StagiaireId}`}> <CgArrowLeftR /> </button>
                         </div>
                     <form>
                         <div className="Profile_info_picture">
                             <h4>Profile Picture</h4>
                                 <div>
-                                    <img src={Profile} alt="Profile" style={{ 
+
+                                    <img src={Profile === 'ProImg' ? 'https://static.vecteezy.com/system/resources/previews/001/844/566/large_2x/jet-engine-design-illustration-isolated-on-white-background-free-vector.jpg' : `data:image/png;base64,${Profile}`} alt="Profile" style={{ 
                                         position: "absolute", width: "100%", height: "100%", borderRadius: "5px"
                                      }}/>
+                                     
                                     <button onClick={e => {e.preventDefault();File.current.click();}}>Edit</button>
                                     <input type="file" name="Profile" ref={File} style={{ display: "none" }}
                                         onChange={ChangeProfile}/>
@@ -131,10 +137,19 @@ export default function Profile() {
                                         onChange={e => setCIN(e.target.value)}/>
                                 </div>
                                 <div>
-                                    <label htmlFor='Password'>Confirm password</label>
-                                    <input type='password' name='UserPassword' value={Password}
-                                        placeholder="Confirm your password for update data"
-                                        onChange={e => setPassword(e.target.value)}/>
+                                    <label htmlFor='Password'>Old password</label>
+                                    <input type='password' name='UserOldPassword' 
+                                        onChange={e => setOldPassword(e.target.value)}/>
+                                </div>
+                                <div>
+                                    <label htmlFor='Password'>New password</label>
+                                    <input type='password' name='UserNewPassword' 
+                                        onChange={e => setNewPassword(e.target.value)}/>
+                                </div>
+                                <div>
+                                    <label htmlFor='Password'>Confirm new password</label>
+                                    <input type='password' name='UserConfirmPassword' 
+                                        onChange={e => setConPassword(e.target.value)}/>
                                 </div>
                                 <div>
                                     <input className="update_profile" type='submit'

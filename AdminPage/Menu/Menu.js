@@ -9,14 +9,27 @@ export default function Menu() {
   const toggle = useSelector(state => state.MenuReducer.toogle_menu);
   const dispatch = useDispatch();
 
-  const [pageState, setpageState] = useState([
-    JSON.parse(localStorage.PageState)[1] === 'Light' ?
-    <BsFillSunFill /> : <MdDarkMode />, JSON.parse(localStorage.PageState)[1]
-  ]);
+  // const [pageState, setpageState] = useState([
+  //   JSON.parse(localStorage.PageState)[1] === 'Light' ?
+  //   <BsFillSunFill /> : <MdDarkMode />, JSON.parse(localStorage.PageState)[1]
+  // ]);
+
+  const [pageState, setpageState] = useState(CheckLocalStorage);
 
   const Menu = useRef();
 
   const AdminId = window.location.search;
+
+  function CheckLocalStorage () {
+    if (localStorage.PageState === undefined) {
+      localStorage.PageState = JSON.stringify(['LightMode', 'Light']);
+    }
+
+    return [
+      JSON.parse(localStorage.PageState)[1] === 'Light' ?
+      <BsFillSunFill /> : <MdDarkMode />, JSON.parse(localStorage.PageState)[1]
+    ];
+  }
 
   useEffect(() => {
     if (toggle) {
@@ -85,7 +98,7 @@ export default function Menu() {
     dispatch({type: 'Toggle', payload: false});
   };
 
-  return (
+return (
     <div ref={Menu}>
       <div onClick={HideMenu}>
           <GiCancel />
@@ -141,7 +154,9 @@ export default function Menu() {
         -113 -44 -4 -45 -4 -61 33 -23 57 -16 88 26 102 61 21 79 17 96 -22z m-193
         -33 c9 -10 19 -36 23 -59 5 -36 3 -43 -17 -56 -72 -46 -119 -23 -122 59 -2 45
         -1 47 33 60 48 17 64 17 83 -4z"></path>
-        <path d="M4968 3375 c-3 -3 -3 -17 0 -30 5 -29 1 -28 187 -50 153 -18 412 -61
+
+Brahim Azirar, [4/3/23 3:52 PM]
+<path d="M4968 3375 c-3 -3 -3 -17 0 -30 5 -29 1 -28 187 -50 153 -18 412 -61
         600 -99 66 -13 122 -22 124 -20 3 3 -11 20 -30 40 -34 33 -41 36 -204 64 -148
         26 -638 100 -663 100 -5 0 -11 -2 -14 -5z"></path>
         <path d="M3825 3340 c-632 -18 -1087 -77 -1600 -207 -99 -25 -190 -48 -202
@@ -196,7 +211,9 @@ export default function Menu() {
         -11z"></path>
         <path d="M814 2399 c-10 -17 13 -36 27 -22 12 12 4 33 -11 33 -5 0 -12 -5 -16
         -11z"></path>
-        <path d="M875 2401 c-8 -15 3 -31 21 -31 9 0 14 7 12 17 -4 20 -24 28 -33 14z"></path>
+
+Brahim Azirar, [4/3/23 3:52 PM]
+<path d="M875 2401 c-8 -15 3 -31 21 -31 9 0 14 7 12 17 -4 20 -24 28 -33 14z"></path>
         <path d="M933 2318 c-6 -7 -13 -21 -16 -30 -5 -14 -18 -18 -63 -18 -48 0 -57
         3 -61 20 -7 27 -26 20 -37 -13 -17 -47 4 -58 108 -55 l91 3 3 53 c3 51 -6 65
         -25 40z"></path>
@@ -254,7 +271,9 @@ export default function Menu() {
         -60 -12 0 -26 5 -33 12 -15 15 -16 63 -2 89 12 21 50 25 68 7z"></path>
         <path d="M5435 1961 l-30 -6 0 -103 c0 -61 4 -102 10 -102 6 0 11 11 13 25 3
         23 7 26 32 20 42 -9 80 30 80 83 0 65 -40 97 -105 83z m64 -35 c7 -8 11 -31 9
-        -52 -6 -72 -70 -72 -76 0 -4 41 11 66 38 66 10 0 23 -6 29 -14z"></path>
+
+Brahim Azirar, [4/3/23 3:52 PM]
+-52 -6 -72 -70 -72 -76 0 -4 41 11 66 38 66 10 0 23 -6 29 -14z"></path>
         <path d="M5653 1960 c-28 -12 -43 -40 -43 -83 0 -50 29 -81 75 -81 48 0 75 31
         75 84 0 63 -53 102 -107 80z m65 -32 c7 -7 12 -28 12 -48 0 -41 -14 -60 -47
         -60 -24 0 -43 26 -43 60 0 51 47 79 78 48z"></path>

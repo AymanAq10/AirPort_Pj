@@ -8,6 +8,8 @@ import { Provider } from "react-redux";
 import store from '../Store/store';
 
 export default function AdminPage({ Element }) {
+
+  
   return (
     <div id='app'>
       <Provider store={store}>

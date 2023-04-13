@@ -20,4 +20,6 @@ class Admin_acc extends Model
         'Tele',
         'password',
     ];
+    // protected $hidden = ['password'];
+
 }

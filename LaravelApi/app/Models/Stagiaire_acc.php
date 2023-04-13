@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Requests;
+use App\Models\RequestesAccepter;
+
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Stagiaire_acc extends Model
 {
@@ -12,13 +15,13 @@ class Stagiaire_acc extends Model
     protected $table = 'Stagiaire_acc';
     protected $primaryKey = 'Acc_id';
 
-    // public function Requeste(){
-    //     return $this->hasOne(Requeste::class);
-    // }
+    public function Requests(){
+        return $this->hasOne(Requests::class, 'Acc_id');
+    }
 
-    // public function Requeste_accepters(){
-    //     return $this->hasOne(Requeste_accepter::class);
-    // }
+    public function RequestesAccepter(){
+        return $this->hasOne(RequestesAccepter::class, 'Acc_id');
+    }
     
     protected $fillable = [
         'Fname',
@@ -27,6 +30,10 @@ class Stagiaire_acc extends Model
         '_Number',
         'Acc_email',
         'CIN',
-        '_Password'
+        '_Password',
+        'ImageProfile'
     ];
+    
+    // protected $hidden = ['_Password'];
+
 }

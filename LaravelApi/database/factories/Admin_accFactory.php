@@ -17,11 +17,11 @@ class Admin_accFactory extends Factory
     public function definition()
     {
         return [
-            'Fname'=> $this->faker->lastName(),
-            'Lname'=> $this->faker->name(),
-            'Email'=> $this->faker->companyEmail(),
-            'Tele'=> $this->faker->phoneNumber(),
-            'password' => $this->faker->password(),
+            'Fname'=> substr($this->faker->lastName(),0 ,10),
+            'Lname'=> substr($this->faker->name(),0 ,10),
+            'Email'=> substr($this->faker->companyEmail(),0 ,30),
+            'Tele'=> substr($this->faker->phoneNumber(),0 ,13),
+            'password' => substr($this->faker->password(),0 ,20),
         ];
     }
 }

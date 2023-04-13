@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 export default function Admin() {
 
-    // this function for add admin in database:
-        // inputs => an array contains admin data : [FirstName, LastName, Email, Thel, Password]
-        // outputs => ???
+
     function AddAdmin(data) {
-        fetch("http://localhost/airport-Project/src/BackEnd/Admin.php", {
-            method: "POST", body: new URLSearchParams([['type', 'AddAdmin'],
-                ['data', JSON.stringify(data)]])
-        });
+        axios.post('http://localhost:8000/api/Admins', data)
+        .then(data => { 
+            if (data.data.success === true) {
+                alert("Added successfully!")
+            }
+            else{
+                alert("Error the account wasn't added!")
+
+            }
+        })
     };
 
   return (
@@ -19,7 +24,7 @@ export default function Admin() {
   );
 };
 
-export function AdminForm({ data, update, newLabel, add }) {
+export function AdminForm({ data, update, newLabel, add}) {
     const [FirstName, setFirstName] = useState('');
     const [LastName, setLastName] = useState('');
     const [Email, setEmail] = useState('');
@@ -30,7 +35,7 @@ export function AdminForm({ data, update, newLabel, add }) {
 
     useEffect(() => {
         const AdminId = window.location.search.split('')[4];
-        setFormData([FirstName, LastName, Thel, Email, Password, AdminId]);
+        setFormData([{'Fname': FirstName,'Lname': LastName,'Tele': Thel,'Email': Email,'password': Password}]);
     }, [FirstName, LastName, Thel, Email, Password]);
 
     useEffect(() => {
@@ -84,12 +89,12 @@ export function AdminForm({ data, update, newLabel, add }) {
             <div>
                 <label htmlFor="Password">Password</label>
                 <input type="text" name="Password" id='Password' value={Password}
-                    onChange={(e) => setPassowrd(e.target.value)} placeholder='Old Password'/>
+                    onChange={(e) => setPassowrd(e.target.value)} disabled/>
             </div>
             <div>
                 <label htmlFor="CPassword">{ChangeLabel()}</label>
                 <input type="text" name="CPassword" id='CPassword' value={NewPassword}
-                    onChange={(e) => setNewPassword(e.target.value)} placeholder={ChangeLabel()} />
+                    onChange={(e) => setNewPassword(e.target.value)}  />
             </div>
             <button type="button" id='UpdateData' onClick={ToogleFunctions}>Valide</button>
           </form>

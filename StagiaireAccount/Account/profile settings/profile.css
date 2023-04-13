@@ -60,7 +60,7 @@
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    /* height: 100vh; */
+    /* height: 150vh; */
 }
 
 
@@ -84,6 +84,7 @@
         border-radius: 2vh;
         box-shadow: -0.3vh 0.3vh 0vh black;
         padding: 1.5vh;
+        /* padding-bottom: 10vh; */
     }
     /* Profile_info_back_btn START */
     .Profile_info_back_btn{
@@ -185,7 +186,7 @@
 
         display: grid;
         grid-template-columns: 35% 35%;
-        grid-template-rows: repeat(4,25%);
+        grid-template-rows: repeat(5,20%);
 
         justify-content: space-around;
         align-items: flex-end;
@@ -249,7 +250,7 @@
         .Profile_info_form{
 
             grid-template-columns: 100%;
-            grid-template-rows: repeat(8, 12.5%);
+            grid-template-rows: repeat(10, 10%);
 
             /* grid-template-columns: 35% 35%; */
 
@@ -257,7 +258,6 @@
             align-items: center;
             grid-row-gap: 0.5vh;
         }
-
         
     }
 

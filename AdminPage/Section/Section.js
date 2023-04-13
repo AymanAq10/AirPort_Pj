@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useEffect, useRef } from 'react';
 import { FiMenu } from 'react-icons/fi';
 
@@ -15,13 +16,12 @@ export default function Section({ Content }) {
     // inputs => admin id
     // outputs => Admin First Name and Last Name
   useEffect(() => {
-    fetch("http://localhost/airport-Project/src/BackEnd/Admin.php", {
-      method: 'POST', body: new URLSearchParams([['type', 'GetAdmin'], ['Adminid', AdminId]])
-    })
-      .then(resp => resp.json())
-      .then(data => {
-        FullName.current.textContent = `${data.Fname} ${data.Lname}`;
-      });
+
+        axios.get(`http://localhost:8000/api/Admins/${AdminId}`)
+        .then(data => {
+          FullName.current.textContent = `${data.data[0]} ${data.data[1]}`;
+        })
+
   }, []);
 
   function ShowMenu() {

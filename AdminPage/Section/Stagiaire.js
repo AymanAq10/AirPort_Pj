@@ -13,16 +13,9 @@ export default function Stagiaire() {
 
   // this request is done !
   useEffect(() => {
-    fetch("http://localhost/airport-Project/src/BackEnd/Statgiaire.php", {
-      method: 'POST',
-      body: new URLSearchParams([['type', 'GetData']])
-    })
-      .then(resp => resp.json())
-      .then(data => setDataStag(data))
-      .catch(err => console.log(err));
 
-    // axios.get('http://127.0.0.1:8000/api/Stagires')
-    //   .then(resp => setDataStag(resp.data));
+    axios.get('http://127.0.0.1:8000/api/Stagires')
+      .then(resp => setDataStag(resp.data));
 
   }, []);
 
@@ -68,12 +61,7 @@ export default function Stagiaire() {
       return parseInt(ele.children[1].firstElementChild.textContent);
     });
 
-    fetch("http://localhost/airport-Project/src/BackEnd/Statgiaire.php", {
-      method: 'POST',
-      body: new URLSearchParams([['type', 'DeleteItems'], ['ItemsId', ItemsId]])
-    });
-
-    // axios.delete(`http://127.0.0.1:8000/api/Multi-Stagiaire_acc?ItemsId=` + JSON.stringify(ItemsId));
+    axios.delete(`http://127.0.0.1:8000/api/Multi-Stagiaire_acc?ItemsId=` + JSON.stringify(ItemsId));
 
     setDataStag(prev => prev.filter(ele => {
       if (!(ItemsId.some(id => ele.Acc_id === id))) {
@@ -88,12 +76,8 @@ export default function Stagiaire() {
 
   // this request is done !
   function DeleteAll() {
-    fetch("http://localhost/airport-Project/src/BackEnd/Statgiaire.php", {
-      method: 'POST',
-      body: new URLSearchParams([['type', 'DeleteAll']])
-    });
 
-    // axios.delete('http://127.0.0.1:8000/api/stagires/clear');
+    axios.delete('http://127.0.0.1:8000/api/stagires/clear');
 
     setDataStag([]);
   }
@@ -143,12 +127,7 @@ function StagiaireCards({eleKey, obj: {Acc_id, Fname, Lname, Domain, _Number, CI
   function DeleteItem() {
     card.current.classList.remove('CardActive');
 
-    fetch("http://localhost/airport-Project/src/BackEnd/Statgiaire.php", {
-      method: 'POST',
-      body: new URLSearchParams([['type', 'DeleteItem'], ['ItemId', Acc_id]])
-    });
-
-    // axios.delete(`http://localhost:8000/api/Stagires/${Acc_id}`);
+    axios.delete(`http://localhost:8000/api/Stagires/${Acc_id}`);
 
     Data(prev => prev.filter(ele => {
       if (ele.Acc_id !== Acc_id) {

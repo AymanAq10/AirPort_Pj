@@ -16,11 +16,11 @@ return new class extends Migration
         Schema::create('Admin_acc', function (Blueprint $table) {
             // $table->id();
             $table->bigIncrements('AdminId');
-            $table->string('Fname');
-            $table->string('Lname');
-            $table->string('Email');
-            $table->string('Tele');
-            $table->string('password');
+            $table->string('Fname', 20);
+            $table->string('Lname', 20);
+            $table->string('Email', 30)->unique();
+            $table->string('Tele', 13);
+            $table->string('password', 20);
             
             $table->timestamps();
         });
