@@ -1,7 +1,7 @@
 import { legacy_createStore as CreateStore, combineReducers } from "redux";
 
 const DefaultState = {
-    toogle_menu: false, ToggleSignUp: false
+    toogle_menu: false, ToggleSignUp: false,Login:false
 };
 
 const MenuReducer = (state = DefaultState, action) => {
@@ -13,6 +13,12 @@ const MenuReducer = (state = DefaultState, action) => {
     return state;
 };
 
+const LoginReducer = (state = DefaultState,action)=>{
+    if (action.type === 'Login') {
+        return{...state,Login:action.payload};
+    }
+    return state;
+}
 const SignUpReducer = (state = DefaultState, action) => {
 
     if (action.type === 'Toggle_SingUp') {
@@ -23,7 +29,7 @@ const SignUpReducer = (state = DefaultState, action) => {
 
 };
 
-const root = combineReducers({ MenuReducer, SignUpReducer });
+const root = combineReducers({ MenuReducer, SignUpReducer,LoginReducer });
 
 const store = CreateStore(root);
 export default store;
